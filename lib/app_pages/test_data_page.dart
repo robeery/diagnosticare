@@ -4,7 +4,6 @@ import 'package:diagnosticare/test_buttons/model/test_result_cases.dart';
 
 class TestDataPage extends StatelessWidget {
   @override
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
@@ -64,7 +63,11 @@ class TestDataPage extends StatelessWidget {
 class TestDataCard extends StatefulWidget {
   final String title;
   final TestResultCases type;
-  // final int count;
+  static final List<String> testNames = [
+    'Simple',
+    'Accelerometer',
+    'Gyroscope',
+  ];
 
   const TestDataCard({Key? key, required this.title, required this.type})
     : super(key: key);
@@ -77,6 +80,11 @@ class _TestDataCardState extends State<TestDataCard> {
 
   @override
   Widget build(BuildContext context) {
+    final filteredTestResults = [
+      for (int i = 0; i < testData.length; i++)
+        if (testData[i] == widget.type) TestDataCard.testNames[i],
+    ];
+
     switch (widget.type) {
       case TestResultCases.testNotDone:
         cardBorderColor = Colors.white;
@@ -89,16 +97,49 @@ class _TestDataCardState extends State<TestDataCard> {
     }
 
     return Card(
+      color: AppTheme.seedColor,
       borderOnForeground: true, // Border shown in front of content
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
         side: BorderSide(color: cardBorderColor, width: 4),
       ),
-      child: Container(
-        height: 150,
-        width: 150,
-        color: AppTheme.seedColor,
-        child: Center(child: Text('Border Front')),
+      child: Padding(
+        padding: const EdgeInsets.all(32.0),
+
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Title
+            Text(
+              widget.title,
+              style: TextStyle(
+                color: cardBorderColor,
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+            ),
+            const SizedBox(height: 12),
+
+            // Content: list of test items or a default message
+            if (filteredTestResults.isNotEmpty)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: filteredTestResults
+                    .map(
+                      (item) => Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5.0),
+                        child: Text(
+                          "• $item",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    )
+                    .toList(),
+              )
+            else
+              Text("No tests available.", style: TextStyle(color: Colors.grey)),
+          ],
+        ),
       ),
     );
   }
