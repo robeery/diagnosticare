@@ -26,6 +26,17 @@ class AppTheme {
       ),
     ),
     buttonTheme: ButtonThemeData(buttonColor: seedColor),
+
+    navigationBarTheme: NavigationBarThemeData(
+      backgroundColor: AppTheme.seedColor,
+      indicatorColor: AppTheme.appBarBottomBorderColor,
+      labelTextStyle: MaterialStateProperty.all(
+        const TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+      ),
+      iconTheme: MaterialStateProperty.all(
+        const IconThemeData(color: Colors.white),
+      ),
+    ),
   );
 
   ButtonStyle buttonStyle = TextButton.styleFrom(

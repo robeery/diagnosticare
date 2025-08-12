@@ -43,7 +43,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  var selectedIndex = 0;
+  int selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
     //final ValueNotifier<bool> isBusyNotifier = ValueNotifier(false);
@@ -94,28 +94,33 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
           ),
-          bottomNavigationBar: NavigationBar(
-            height: 75,
-            backgroundColor: AppTheme.seedColor,
-            destinations: [
-              NavigationDestination(
-                selectedIcon: Icon(Icons.home),
-                icon: Icon(Icons.home_outlined),
-                label: 'Home',
+          bottomNavigationBar: Container(
+            decoration: const BoxDecoration(
+              border: Border(
+                top: BorderSide(
+                  color: AppTheme.appBarBottomBorderColor, // Orange border
+                  width: 2,
+                ),
               ),
-              NavigationDestination(
-                icon: Badge(child: Icon(Icons.notifications_sharp)),
-                label: 'Notifications',
-              ),
-            ],
-            onDestinationSelected: (int index) {
-              setState(() {
-                selectedIndex = index;
-              });
-            },
-            indicatorColor: AppTheme.appBarBottomBorderColor,
+            ),
+            child: NavigationBar(
+              height: 75,
+              selectedIndex: selectedIndex,
+              animationDuration: const Duration(seconds: 1),
+              destinations: const [
+                NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
+                NavigationDestination(
+                  icon: Icon(Icons.file_copy),
+                  label: 'Test Data',
+                ),
+              ],
+              onDestinationSelected: (int index) {
+                setState(() {
+                  selectedIndex = index;
+                });
+              },
+            ),
           ),
-
           body: Column(
             children: [Expanded(child: Container(child: page))],
           ),
