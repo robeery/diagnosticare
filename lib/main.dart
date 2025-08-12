@@ -44,27 +44,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final ValueNotifier<bool> isBusyNotifier = ValueNotifier(false);
-
-  late final List<Widget> testButtons;
-
-  @override
-  void initState() {
-    super.initState();
-    testButtons = [
-      SimpleTestButton(isBusyNotifier: isBusyNotifier),
-      AccelerometerTestButton(isBusyNotifier: isBusyNotifier),
-      GyroscopeButton(isBusyNotifier: isBusyNotifier),
-      SimpleTestButton(isBusyNotifier: isBusyNotifier),
-      SimpleTestButton(isBusyNotifier: isBusyNotifier),
-      SimpleTestButton(isBusyNotifier: isBusyNotifier),
-      SimpleTestButton(isBusyNotifier: isBusyNotifier),
-      SimpleTestButton(isBusyNotifier: isBusyNotifier),
-      SimpleTestButton(isBusyNotifier: isBusyNotifier),
-      GyroscopeButton(isBusyNotifier: isBusyNotifier),
-    ];
-  }
-
+  var selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
     //final ValueNotifier<bool> isBusyNotifier = ValueNotifier(false);
@@ -86,6 +66,16 @@ class _MyHomePageState extends State<MyHomePage> {
       GyroscopeButton(isBusyNotifier: isBusyNotifier),
     ];
     */
+
+    Widget page;
+    switch (selectedIndex) {
+      case 0:
+        page = MainPage(title: 'Certus');
+      //break;
+
+      default:
+        throw UnimplementedError('no widget for $selectedIndex');
+    }
     return LayoutBuilder(
       builder: (context, constraints) {
         return Scaffold(
@@ -103,60 +93,28 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
           ),
-          body: Stack(
-            children: [
-              // Background image
-              Positioned.fill(
-                child: Image.asset(
-                  'images/background_aplicatie.png', // Replace with your image path
-                  fit: BoxFit.cover,
-                ),
+          bottomNavigationBar: NavigationBar(
+            destinations: [
+              NavigationDestination(
+                selectedIcon: Icon(Icons.home),
+                icon: Icon(Icons.home_outlined),
+                label: 'Home',
               ),
-              RawScrollbar(
-                //to be optimized
-                //hints: ListView.separated, ListView builder
-                thumbColor: AppTheme.appBarBottomBorderColor,
-                radius: Radius.circular(10),
-                // trackColor: const Color.fromARGB(255, 54, 244, 168),
-                // trackBorderColor: Colors.amber,
-                // trackVisibility: true,
-                child: ListView.separated(
-                  key: Key("1"),
-                  primary: true,
-                  padding: const EdgeInsets.all(60),
-                  itemCount: testButtons.length,
-                  itemBuilder: (context, index) {
-                    /*
-                return RepaintBoundary(
-                  child: KeyedSubtree(
-                    key: Key(index.toString()),
-                    child: testButtonsBuilders[index],
-                  ),
-                );
-                */
-                    return RepaintBoundary(child: testButtons[index]);
-                  },
-                  separatorBuilder: (context, index) =>
-                      const SizedBox(height: 30),
-                ),
-              ),
-              ValueListenableBuilder<bool>(
-                valueListenable: isBusyNotifier,
-                builder: (context, isBusy, _) {
-                  return isBusy
-                      ? Align(
-                          alignment: Alignment.bottomRight,
-                          child: Padding(
-                            padding: const EdgeInsets.all(11),
-                            child: CircularProgressIndicator(
-                              color: AppTheme.appBarBottomBorderColor,
-                            ),
-                          ),
-                        )
-                      : const SizedBox.shrink();
-                },
+              NavigationDestination(
+                icon: Badge(child: Icon(Icons.notifications_sharp)),
+                label: 'Notifications',
               ),
             ],
+            onDestinationSelected: (int index) {
+              setState(() {
+                selectedIndex = index;
+              });
+            },
+            indicatorColor: AppTheme.appBarBottomBorderColor,
+          ),
+
+          body: Column(
+            children: [Expanded(child: Container(child: page))],
           ),
         );
       },
@@ -203,17 +161,7 @@ class MainPageState extends State<MainPage> {
           backgroundColor: Theme.of(
             context,
           ).colorScheme.primary, //Color.fromARGB(255, 246, 246, 246),
-          appBar: AppBar(
-            backgroundColor: AppTheme.seedColor,
-            title: Text(widget.title, style: TextStyle(color: Colors.white)),
-            bottom: PreferredSize(
-              preferredSize: Size.fromHeight(2),
-              child: Container(
-                color: AppTheme.appBarBottomBorderColor,
-                height: 2,
-              ),
-            ),
-          ),
+
           body: Stack(
             children: [
               // Background image
