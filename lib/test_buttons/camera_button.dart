@@ -2,15 +2,23 @@
 
 import 'dart:async';
 import 'dart:io';
+import 'package:diagnosticare/app_theme/app_theme.dart';
 import 'package:diagnosticare/test_buttons/model/test_result_cases.dart';
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'base_button.dart';
 
 class TakePictureScreen extends StatefulWidget {
-  const TakePictureScreen({super.key, required this.camera});
+  const TakePictureScreen({
+    super.key,
+    required this.camera,
+    required this.widgetId,
+  });
 
   final CameraDescription camera;
+  final int widgetId;
 
   @override
   TakePictureScreenState createState() => TakePictureScreenState();
@@ -84,6 +92,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                   // Pass the automatically generated path to
                   // the DisplayPictureScreen widget.
                   imagePath: image.path,
+                  widgetId: widget.widgetId,
                 ),
               ),
             );
@@ -94,6 +103,22 @@ class TakePictureScreenState extends State<TakePictureScreen> {
         },
         child: const Icon(Icons.camera_alt),
       ),
+
+      bottomNavigationBar: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+
+        children: [
+          TextButton.icon(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.cancel, color: Colors.white),
+            label: const Text('Cancel', style: TextStyle(color: Colors.white)),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -101,13 +126,29 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 // A widget that displays the picture taken by the user.
 class DisplayPictureScreen extends StatelessWidget {
   final String imagePath;
+  final int widgetId;
+  const DisplayPictureScreen({
+    super.key,
+    required this.imagePath,
+    required this.widgetId,
+  });
 
-  const DisplayPictureScreen({super.key, required this.imagePath});
+  //function that saves tests results
+  Future<void> saveTestData(List<TestResultCases> testData) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    // Convert each enum to string using Enum_to_string plugin
+    List<String> stringList = testData
+        .map((e) => EnumToString.convertToString(e))
+        .toList();
+
+    await prefs.setStringList('testData', stringList);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Display the Picture')),
+      appBar: AppBar(title: const Text('Is the picture clear?')),
 
       // The image is stored as a file on the device. Use the `Image.file`
       // constructor with the given path to display the image.
@@ -116,13 +157,29 @@ class DisplayPictureScreen extends StatelessWidget {
           Image.file(File(imagePath)),
           Align(
             alignment: Alignment.bottomCenter,
-
+            heightFactor: 14.1,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               spacing: 100.0,
               children: [
-                TextButton.icon(onPressed: function, label: Text('buton 1')),
-                TextButton.icon(onPressed: function, label: Text('buton 2')),
+                TextButton.icon(
+                  onPressed: () {
+                    testData[widgetId] = TestResultCases.testFailed;
+                    saveTestData(testData);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  },
+                  label: Text('No', style: TextStyle(color: Colors.white)),
+                ),
+                TextButton.icon(
+                  onPressed: () {
+                    testData[widgetId] = TestResultCases.testSucceded;
+                    saveTestData(testData);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  },
+                  label: Text('Yes', style: TextStyle(color: Colors.white)),
+                ),
               ],
             ),
           ),
@@ -130,10 +187,6 @@ class DisplayPictureScreen extends StatelessWidget {
       ),
     );
   }
-}
-
-void function() {
-  print('hei');
 }
 
 class CameraTestButton extends BaseButton {
@@ -162,10 +215,12 @@ class CameraTestButtonState extends BaseButtonState<CameraTestButton> {
     if (context.mounted) {
       await Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => TakePictureScreen(camera: firstCamera),
+          builder: (context) =>
+              TakePictureScreen(camera: firstCamera, widgetId: widget.testId),
         ),
       );
     }
+    setState(() {});
   }
 
   @override
