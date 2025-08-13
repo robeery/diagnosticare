@@ -104,6 +104,8 @@ class TakePictureScreenState extends State<TakePictureScreen> {
         child: const Icon(Icons.camera_alt),
       ),
 
+      //Cancel button - to be worked on later, it has a weird placement
+      /*
       bottomNavigationBar: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         mainAxisSize: MainAxisSize.min,
@@ -113,12 +115,14 @@ class TakePictureScreenState extends State<TakePictureScreen> {
           TextButton.icon(
             onPressed: () {
               Navigator.pop(context);
+              testData[widget.widgetId] = TestResultCases.testNotDone;
             },
             icon: const Icon(Icons.cancel, color: Colors.white),
             label: const Text('Cancel', style: TextStyle(color: Colors.white)),
           ),
         ],
       ),
+      */
     );
   }
 }
@@ -190,16 +194,22 @@ class DisplayPictureScreen extends StatelessWidget {
 }
 
 class CameraTestButton extends BaseButton {
-  const CameraTestButton({Key? key, required ValueNotifier<bool> isBusyNotifier})
-    : super(
-        key: key,
-        testId: 3,
-        buttonName: 'Camera',
-        popUpName: 'Camera Test',
-        popUpDescription:
-            'After pressing the start button, please shake your phone in order to test the accelerometer.',
-        isBusyNotifier: isBusyNotifier,
-      );
+  final int cameraNumber;
+  const CameraTestButton({
+    Key? key,
+    required ValueNotifier<bool> isBusyNotifier,
+    required String buttonName,
+    required int testId,
+    required this.cameraNumber,
+  }) : super(
+         key: key,
+         testId: testId,
+         buttonName: buttonName,
+         popUpName: '$buttonName Test',
+         popUpDescription:
+             'After pressing the start button, please shake your phone in order to test the accelerometer.',
+         isBusyNotifier: isBusyNotifier,
+       );
 
   @override
   State<CameraTestButton> createState() => CameraTestButtonState();
@@ -210,13 +220,16 @@ class CameraTestButtonState extends BaseButtonState<CameraTestButton> {
   runTest({TestResultCases? param}) async {
     WidgetsFlutterBinding.ensureInitialized();
     final cameras = await availableCameras();
-    final firstCamera = cameras.first;
+
+    final selectedCamera = cameras[widget.cameraNumber];
 
     if (context.mounted) {
       await Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) =>
-              TakePictureScreen(camera: firstCamera, widgetId: widget.testId),
+          builder: (context) => TakePictureScreen(
+            camera: selectedCamera,
+            widgetId: widget.testId,
+          ),
         ),
       );
     }

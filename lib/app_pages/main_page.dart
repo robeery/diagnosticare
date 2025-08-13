@@ -33,7 +33,12 @@ class MainPageState extends State<MainPage> {
       SimpleTestButton(isBusyNotifier: isBusyNotifier),
       SimpleTestButton(isBusyNotifier: isBusyNotifier),
       GyroscopeButton(isBusyNotifier: isBusyNotifier),
-      CameraTestButton(isBusyNotifier: isBusyNotifier),
+      CameraTestButton(
+        isBusyNotifier: isBusyNotifier,
+        buttonName: 'Front Camera',
+        testId: 3,
+        cameraNumber: 0,
+      ),
     ];
   }
 
