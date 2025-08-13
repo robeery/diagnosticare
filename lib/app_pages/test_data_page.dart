@@ -67,6 +67,7 @@ class TestDataCard extends StatefulWidget {
     'Simple',
     'Accelerometer',
     'Gyroscope',
+    'Camera',
   ];
 
   const TestDataCard({Key? key, required this.title, required this.type})
@@ -87,7 +88,7 @@ class _TestDataCardState extends State<TestDataCard> {
 
     switch (widget.type) {
       case TestResultCases.testNotDone:
-        cardBorderColor = Colors.white;
+        cardBorderColor = Colors.white60;
 
       case TestResultCases.testSucceded:
         cardBorderColor = Colors.greenAccent;

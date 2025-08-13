@@ -37,6 +37,9 @@ dependencies:
   sensors_plus: ^6.1.1
   shared_preferences: ^2.5.3
   enum_to_string: ^2.2.1
+  camera: ^0.11.2
+  path_provider: ^2.1.5
+  path: ^1.9.1
 
 dev_dependencies:
   flutter_test:

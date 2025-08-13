@@ -51,6 +51,7 @@ class _SimpleTestButtonState extends BaseButtonState<SimpleTestButton> {
 
     testResult = await runTest(param: testResult);
     testData[widget.testId] = testResult;
+
     saveTestData(testData);
 
     setState(() {});
