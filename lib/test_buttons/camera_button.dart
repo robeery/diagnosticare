@@ -2,7 +2,6 @@
 
 import 'dart:async';
 import 'dart:io';
-import 'package:diagnosticare/app_theme/app_theme.dart';
 import 'package:diagnosticare/test_buttons/model/test_result_cases.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
@@ -207,7 +206,7 @@ class CameraTestButton extends BaseButton {
          buttonName: buttonName,
          popUpName: '$buttonName Test',
          popUpDescription:
-             'After pressing the start button, please shake your phone in order to test the accelerometer.',
+             'After pressing the start button, various permisions may be asked. After accepting them, you will need to take a picture and determine is the selected camera is functional or not in order to conclude the test.',
          isBusyNotifier: isBusyNotifier,
        );
 
@@ -238,6 +237,48 @@ class CameraTestButtonState extends BaseButtonState<CameraTestButton> {
 
   @override
   void onPressedFunction() {
-    runTest();
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setState) => AlertDialog(
+          title: Text(widget.popUpName),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text(widget.popUpDescription),
+              SizedBox(height: 10),
+              if (widget.testId == 3)
+                Image.asset(
+                  'images/back_camera_image.png',
+                  width: 150,
+                  height: 150,
+                )
+              else if (widget.testId == 4)
+                Image.asset(
+                  'images/front_camera_image.png',
+                  width: 150,
+                  height: 150,
+                ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            TextButton(
+              child: const Text('Start test'),
+              onPressed: () {
+                runTest();
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

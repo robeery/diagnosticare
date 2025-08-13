@@ -67,7 +67,8 @@ class TestDataCard extends StatefulWidget {
     'Simple',
     'Accelerometer',
     'Gyroscope',
-    'Camera',
+    'Back Camera',
+    'Front Camera',
   ];
 
   const TestDataCard({Key? key, required this.title, required this.type})
