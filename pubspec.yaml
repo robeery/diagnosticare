@@ -40,6 +40,8 @@ dependencies:
   camera: ^0.11.2
   path_provider: ^2.1.5
   path: ^1.9.1
+  audioplayers: ^5.2.1
+  flutter_audio_output: ^0.0.4
 
 dev_dependencies:
   flutter_test:
@@ -76,6 +78,9 @@ flutter:
       - images/earpiece_photo.png
       - images/speaker_photo.png
       - images/stereo_photo.png
+      - assets/audio/stereo_both_sound.mp3
+      - assets/audio/stereo_right_sound.mp3
+      - assets/audio/stereo_left_sound.mp3
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 

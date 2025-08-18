@@ -1,4 +1,5 @@
 import 'package:diagnosticare/test_buttons/model/test_result_cases.dart';
+import 'package:diagnosticare/test_buttons/speaker/display_speaker_class.dart';
 import 'package:flutter/material.dart';
 import '../base_button.dart';
 
@@ -64,7 +65,22 @@ class SpeakerTestButtonState extends BaseButtonState<SpeakerTestButton> {
   }
 
   @override
-  runTest({TestResultCases? param}) async {}
+  runTest({TestResultCases? param}) async {
+    if (context.mounted) {
+      print('PUSH');
+      await Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => StereoTestPage(
+            widgetId: widget.testId,
+            buttonName: widget.buttonName,
+          ),
+        ),
+      );
+    }
+
+    setState(() {});
+  }
+
   @override
   void onPressedFunction() {
     showDialog(
@@ -91,8 +107,8 @@ class SpeakerTestButtonState extends BaseButtonState<SpeakerTestButton> {
             TextButton(
               child: const Text('Start test'),
               onPressed: () {
-                runTest();
                 Navigator.pop(context);
+                runTest();
               },
             ),
           ],

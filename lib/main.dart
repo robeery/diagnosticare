@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'app_theme/app_theme.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(const MyApp());
 }
 
