@@ -73,6 +73,9 @@ flutter:
       - images/gyroscope_photo.png
       - images/back_camera_image.png
       - images/front_camera_image.png
+      - images/earpiece_photo.png
+      - images/speaker_photo.png
+      - images/stereo_photo.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 

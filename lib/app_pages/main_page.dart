@@ -1,4 +1,5 @@
 import 'package:diagnosticare/test_buttons/gyroscope_button.dart';
+import 'package:diagnosticare/test_buttons/speaker/speaker_button.dart';
 import 'package:flutter/material.dart';
 import 'package:diagnosticare/test_buttons/accelerometer_button.dart';
 import 'package:diagnosticare/test_buttons/simple_button.dart';
@@ -45,6 +46,24 @@ class MainPageState extends State<MainPage> {
         buttonName: 'Front Camera',
         testId: 4,
         cameraNumber: 1,
+      ),
+
+      SpeakerTestButton(
+        isBusyNotifier: isBusyNotifier,
+        buttonName: 'Speaker',
+        testId: 5,
+      ),
+
+      SpeakerTestButton(
+        isBusyNotifier: isBusyNotifier,
+        buttonName: 'Earpiece',
+        testId: 6,
+      ),
+
+      SpeakerTestButton(
+        isBusyNotifier: isBusyNotifier,
+        buttonName: 'Stereo Sound',
+        testId: 7,
       ),
     ];
   }
