@@ -1,3 +1,4 @@
+import 'package:diagnosticare/app_theme/app_theme.dart';
 import 'package:diagnosticare/test_buttons/model/test_result_cases.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
@@ -37,11 +38,11 @@ class StereoTestPageState extends State<StereoTestPage> {
     print(FlutterAudioOutput.getCurrentOutput());
     print(FlutterAudioOutput.getAvailableInputs());
     print('EARPIECE');
-
+    //this function is cursed
     await player.setAudioContext(
       AudioContext(
         android: AudioContextAndroid(
-          isSpeakerphoneOn: false, // THIS switches to earpiece
+          isSpeakerphoneOn: false, // this actually switches to earpiece
           contentType: AndroidContentType.speech,
           usageType: AndroidUsageType.voiceCommunication,
           audioFocus: AndroidAudioFocus.gain,
@@ -78,7 +79,13 @@ class StereoTestPageState extends State<StereoTestPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Are the buttons audible?')),
+      appBar: AppBar(
+        title: Text('Are the buttons audible?'),
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(2),
+          child: Container(color: AppTheme.appBarBottomBorderColor, height: 2),
+        ),
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -90,10 +97,21 @@ class StereoTestPageState extends State<StereoTestPage> {
                   setState(() {
                     isPressedButton1 = true;
                     isPressedButton2 = true;
-                    yesAndNoButtonColors = Colors.orange;
+                    yesAndNoButtonColors = AppTheme.appBarBottomBorderColor;
                   });
                 },
-                child: Text('Play Speaker Test'),
+                style: ElevatedButton.styleFrom(
+                  side: BorderSide(
+                    color: isPressedButton1
+                        ? AppTheme.appBarBottomBorderColor
+                        : Colors.transparent,
+                    width: 2.0,
+                  ),
+                ),
+                child: Text(
+                  'Play Speaker Test',
+                  style: TextStyle(fontSize: 22),
+                ),
               ),
 
             if (widget.buttonName == 'Stereo Sound')
@@ -103,11 +121,22 @@ class StereoTestPageState extends State<StereoTestPage> {
                   setState(() {
                     isPressedButton1 = true;
                     if (isPressedButton2) {
-                      yesAndNoButtonColors = Colors.orange;
+                      yesAndNoButtonColors = AppTheme.appBarBottomBorderColor;
                     }
                   });
                 },
-                child: Text('Play Left Channel Only'),
+                style: ElevatedButton.styleFrom(
+                  side: BorderSide(
+                    color: isPressedButton1
+                        ? AppTheme.appBarBottomBorderColor
+                        : Colors.transparent,
+                    width: 2.0,
+                  ),
+                ),
+                child: Text(
+                  'Play Left Channel Only',
+                  style: TextStyle(fontSize: 22),
+                ),
               ),
 
             if (widget.buttonName == 'Stereo Sound')
@@ -117,11 +146,22 @@ class StereoTestPageState extends State<StereoTestPage> {
                   setState(() {
                     isPressedButton2 = true;
                     if (isPressedButton1) {
-                      yesAndNoButtonColors = Colors.orange;
+                      yesAndNoButtonColors = AppTheme.appBarBottomBorderColor;
                     }
                   });
                 },
-                child: Text('Play Right Channel Only'),
+                style: ElevatedButton.styleFrom(
+                  side: BorderSide(
+                    color: isPressedButton2
+                        ? AppTheme.appBarBottomBorderColor
+                        : Colors.transparent,
+                    width: 2.0,
+                  ),
+                ),
+                child: Text(
+                  'Play Right Channel Only',
+                  style: TextStyle(fontSize: 22),
+                ),
               ),
 
             if (widget.buttonName == 'Earpiece')
@@ -130,43 +170,74 @@ class StereoTestPageState extends State<StereoTestPage> {
                   playOnEarpiece('audio/stereo_left_sound.mp3');
                   setState(() {
                     isPressedButton1 = true;
-                    yesAndNoButtonColors = Colors.orange;
+                    isPressedButton2 = true;
+                    yesAndNoButtonColors = AppTheme.appBarBottomBorderColor;
                   });
                 },
-                child: Text('Test Earpiece (Top Speaker)'),
+                style: ElevatedButton.styleFrom(
+                  side: BorderSide(
+                    color: isPressedButton1
+                        ? AppTheme.appBarBottomBorderColor
+                        : Colors.transparent,
+                    width: 2.0,
+                  ),
+                ),
+                child: Text(
+                  'Play Earpiece Test',
+                  style: TextStyle(fontSize: 22),
+                ),
               ),
           ],
         ),
       ),
       bottomSheet: Container(
-        padding: EdgeInsets.symmetric(vertical: 10),
-        color: Colors.black12,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            TextButton.icon(
-              onPressed: () {
-                testData[widget.widgetId] = TestResultCases.testFailed;
-                saveTestData(testData);
-
-                Navigator.pop(context);
-              },
-              icon: Icon(Icons.close, color: yesAndNoButtonColors),
-              label: Text('No', style: TextStyle(color: yesAndNoButtonColors)),
-            ),
-            TextButton.icon(
-              onPressed: isPressedButton1
-                  ? () {
-                      testData[widget.widgetId] = TestResultCases.testSucceded;
-                      saveTestData(testData);
-
-                      Navigator.pop(context);
-                    }
-                  : null,
-              icon: Icon(Icons.check, color: yesAndNoButtonColors),
-              label: Text('Yes', style: TextStyle(color: yesAndNoButtonColors)),
-            ),
-          ],
+        decoration: BoxDecoration(
+          border: Border(
+            top: BorderSide(
+              color: AppTheme.appBarBottomBorderColor,
+              width: 3,
+            ), // Orange top border
+          ),
+        ),
+        child: Container(
+          padding: EdgeInsets.symmetric(vertical: 10),
+          color: AppTheme.seedColor,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              TextButton.icon(
+                onPressed: isPressedButton1 && isPressedButton2
+                    ? () {
+                        testData[widget.widgetId] = TestResultCases.testFailed;
+                        saveTestData(testData);
+                        player.stop();
+                        Navigator.pop(context);
+                      }
+                    : null,
+                icon: Icon(Icons.close, color: yesAndNoButtonColors),
+                label: Text(
+                  'No',
+                  style: TextStyle(color: yesAndNoButtonColors, fontSize: 20),
+                ),
+              ),
+              TextButton.icon(
+                onPressed: isPressedButton1 && isPressedButton2
+                    ? () {
+                        testData[widget.widgetId] =
+                            TestResultCases.testSucceded;
+                        saveTestData(testData);
+                        player.stop();
+                        Navigator.pop(context);
+                      }
+                    : null,
+                icon: Icon(Icons.check, color: yesAndNoButtonColors),
+                label: Text(
+                  'Yes',
+                  style: TextStyle(color: yesAndNoButtonColors, fontSize: 20),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
