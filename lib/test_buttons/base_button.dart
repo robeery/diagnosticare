@@ -60,7 +60,7 @@ abstract class BaseButtonState<T extends BaseButton> extends State<T> {
       return List.filled(8, TestResultCases.testNotDone);
     }
     //If the app crashes due to shared preferences loading after adding a new button, add a forced return List.filled(4, TestResultCases.testNotDone);
-    /*
+
     return stringList
         .map(
           (e) =>
@@ -68,8 +68,8 @@ abstract class BaseButtonState<T extends BaseButton> extends State<T> {
               TestResultCases.testNotDone,
         )
         .toList();
-      */
-    return List.filled(8, TestResultCases.testNotDone);
+
+    // return List.filled(8, TestResultCases.testNotDone);
   }
 
   @override
