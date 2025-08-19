@@ -73,6 +73,7 @@ class TestDataCard extends StatefulWidget {
     'Earpiece',
     'Stereo Sound',
     'Touchscreen',
+    'Multitouch',
   ];
 
   const TestDataCard({Key? key, required this.title, required this.type})

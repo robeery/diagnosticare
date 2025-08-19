@@ -1,40 +1,39 @@
 import 'package:diagnosticare/test_buttons/model/test_result_cases.dart';
 import 'package:diagnosticare/test_buttons/multitouch/multitouch_test.dart';
-import 'package:diagnosticare/test_buttons/touchscreen/touchscreen_test.dart';
+
 import 'package:flutter/material.dart';
 import '../base_button.dart';
 
-class TouchScreenTestButton extends BaseButton {
-  const TouchScreenTestButton({
+class MultiTouchTestButton extends BaseButton {
+  const MultiTouchTestButton({
     Key? key,
     required ValueNotifier<bool> isBusyNotifier,
   }) : super(
          key: key,
-         testId: 8,
-         buttonName: 'Touchscreen',
-         popUpName: 'Touchscreen Test',
+         testId: 9,
+         buttonName: 'Multitouch',
+         popUpName: 'Multitouch Test',
          popUpDescription:
-             'After pressing the start button, you will be taken to a new page filled with squares. In order to successfully test the touchscreen, touch or drag with your fingers across all squares. If any given square cannot be pressed, the test will fail after 15 seconds of inactivity.',
+             'After pressing the start button, you will be taken to two pages split in half. In order to successfully test the multitouch feature, touch with your fingers simultaneously both sides of the screen. If any given side cannot be pressed, the test will fail after 15 seconds of inactivity.',
          isBusyNotifier: isBusyNotifier,
        );
 
   @override
-  State<TouchScreenTestButton> createState() => TouchScreenTestButtonState();
+  State<MultiTouchTestButton> createState() => MultiTouchTestButtonState();
 }
 
-class TouchScreenTestButtonState
-    extends BaseButtonState<TouchScreenTestButton> {
+class MultiTouchTestButtonState extends BaseButtonState<MultiTouchTestButton> {
   @override
   runTest({TestResultCases? param}) async {
     if (context.mounted) {
       print('PUSH');
       await Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => ButtonGridScreen(widgetId: widget.testId),
+          builder: (context) => MultiTouchTestScreen(widgetId: widget.testId),
         ),
       );
     }
-    print('touchscreen test finish');
+    print('multitouch test finish');
     setState(() {});
   }
 
@@ -52,7 +51,7 @@ class TouchScreenTestButtonState
               Text(widget.popUpDescription),
               SizedBox(height: 10),
               Image.asset(
-                'images/touchscreen_image.png',
+                'images/multitouch_image.png',
                 width: 150,
                 height: 150,
               ),

@@ -1,4 +1,5 @@
 import 'package:diagnosticare/test_buttons/gyroscope_button.dart';
+import 'package:diagnosticare/test_buttons/multitouch/multitouch_button.dart';
 import 'package:diagnosticare/test_buttons/speaker/speaker_button.dart';
 import 'package:diagnosticare/test_buttons/touchscreen/touchscreen_button.dart';
 import 'package:flutter/material.dart';
@@ -68,6 +69,7 @@ class MainPageState extends State<MainPage> {
       ),
 
       TouchScreenTestButton(isBusyNotifier: isBusyNotifier),
+      MultiTouchTestButton(isBusyNotifier: isBusyNotifier),
     ];
   }
 

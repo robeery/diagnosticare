@@ -1,9 +1,13 @@
 import 'dart:async';
 import 'package:diagnosticare/app_theme/app_theme.dart';
+import 'package:diagnosticare/test_buttons/model/test_result_cases.dart';
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MultiTouchTestScreen extends StatefulWidget {
-  const MultiTouchTestScreen({super.key});
+  final int widgetId;
+  const MultiTouchTestScreen({super.key, required this.widgetId});
 
   @override
   State<MultiTouchTestScreen> createState() => _MultiTouchTestScreenState();
@@ -32,6 +36,17 @@ class _MultiTouchTestScreenState extends State<MultiTouchTestScreen> {
   void dispose() {
     _inactivityTimer?.cancel();
     super.dispose();
+  }
+
+  Future<void> saveTestData(List<TestResultCases> testData) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    // Convert each enum to string using Enum_to_string plugin
+    List<String> stringList = testData
+        .map((e) => EnumToString.convertToString(e))
+        .toList();
+
+    await prefs.setStringList('testData', stringList);
   }
 
   void _startInactivityTimer() {
@@ -107,6 +122,7 @@ class _MultiTouchTestScreenState extends State<MultiTouchTestScreen> {
         });
         _startInactivityTimer();
       } else {
+        //navigator.pop() issues fix contribution
         // Delay exit to after frame to avoid setState conflicts
         WidgetsBinding.instance.addPostFrameCallback((_) {
           _exitScreen(success: true);
@@ -117,13 +133,17 @@ class _MultiTouchTestScreenState extends State<MultiTouchTestScreen> {
 
   void _exitScreen({required bool success}) {
     if (!mounted) return;
-
+    if (success) {
+      testData[widget.widgetId] = TestResultCases.testSucceded;
+    } else {
+      testData[widget.widgetId] = TestResultCases.testFailed;
+    }
+    saveTestData(testData);
     _inactivityTimer?.cancel();
 
-    // Check if can pop; if not, maybe push replacement or show dialog
     if (Navigator.of(context).canPop()) {
-      Navigator.of(context).pop(success);
       print("_exitScreen -> POP");
+      Navigator.of(context).pop(success);
     }
   }
 
@@ -132,52 +152,80 @@ class _MultiTouchTestScreenState extends State<MultiTouchTestScreen> {
     final isVertical = currentStage == TouchTestStage.vertical;
 
     return Scaffold(
-      body: Listener(
-        onPointerDown: _onPointerDown,
-        onPointerMove: _onPointerMove,
-        onPointerUp: _onPointerUp,
-        child: Flex(
-          direction: isVertical ? Axis.horizontal : Axis.vertical,
-          children: [
-            Expanded(
-              child: Container(
-                color: AppTheme.seedColor,
-                child: Center(
-                  child: Text(
-                    'Touch Here',
-                    style: TextStyle(
-                      color: isLeftOrTopPressed
-                          ? AppTheme.appBarBottomBorderColor
-                          : Colors.white,
-                      fontSize: 20,
+      body: Stack(
+        children: [
+          Listener(
+            onPointerDown: _onPointerDown,
+            onPointerMove: _onPointerMove,
+            onPointerUp: _onPointerUp,
+            child: Flex(
+              direction: isVertical ? Axis.horizontal : Axis.vertical,
+              children: [
+                Expanded(
+                  child: Container(
+                    color: AppTheme.seedColor,
+                    child: Center(
+                      child: Text(
+                        'Touch Here',
+                        style: TextStyle(
+                          color: isLeftOrTopPressed
+                              ? AppTheme.appBarBottomBorderColor
+                              : Colors.white,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  width: isVertical ? 2 : double.infinity,
+                  height: isVertical ? double.infinity : 2,
+                  color: AppTheme.appBarBottomBorderColor,
+                ),
+                Expanded(
+                  child: Container(
+                    color: AppTheme.seedColor,
+                    child: Center(
+                      child: Text(
+                        'And Here',
+                        style: TextStyle(
+                          color: isRightOrBottomPressed
+                              ? AppTheme.appBarBottomBorderColor
+                              : Colors.white,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            top: 16,
+            left: 16,
+            child: ClipOval(
+              child: Material(
+                color: Colors.black54,
+                child: InkWell(
+                  onTap: () {
+                    _inactivityTimer?.cancel();
+                    Navigator.pop(context);
+                  },
+                  child: const SizedBox(
+                    width: 36,
+                    height: 36,
+                    child: Icon(
+                      Icons.arrow_back,
+                      color: Colors.white,
+                      size: 20,
                     ),
                   ),
                 ),
               ),
             ),
-            Container(
-              width: isVertical ? 2 : double.infinity,
-              height: isVertical ? double.infinity : 2,
-              color: AppTheme.appBarBottomBorderColor,
-            ),
-            Expanded(
-              child: Container(
-                color: AppTheme.seedColor,
-                child: Center(
-                  child: Text(
-                    'And Here',
-                    style: TextStyle(
-                      color: isRightOrBottomPressed
-                          ? AppTheme.appBarBottomBorderColor
-                          : Colors.white,
-                      fontSize: 20,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
