@@ -90,6 +90,7 @@ class StereoTestPageState extends State<StereoTestPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            //I may need to find a better method to display these
             if (widget.buttonName == 'Speaker')
               ElevatedButton(
                 onPressed: () {

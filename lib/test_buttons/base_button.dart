@@ -57,7 +57,7 @@ abstract class BaseButtonState<T extends BaseButton> extends State<T> {
 
     if (stringList == null) {
       // return default list if nothing is saved
-      return List.filled(8, TestResultCases.testNotDone);
+      return List.filled(9, TestResultCases.testNotDone);
     }
     //If the app crashes due to shared preferences loading after adding a new button, add a forced return List.filled(4, TestResultCases.testNotDone);
 
@@ -69,7 +69,7 @@ abstract class BaseButtonState<T extends BaseButton> extends State<T> {
         )
         .toList();
 
-    // return List.filled(8, TestResultCases.testNotDone);
+    //return List.filled(9, TestResultCases.testNotDone);
   }
 
   @override

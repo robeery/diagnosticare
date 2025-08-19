@@ -78,6 +78,7 @@ flutter:
       - images/earpiece_photo.png
       - images/speaker_photo.png
       - images/stereo_photo.png
+      - images/touchscreen_image.png
       - assets/audio/stereo_both_sound.mp3
       - assets/audio/stereo_right_sound.mp3
       - assets/audio/stereo_left_sound.mp3

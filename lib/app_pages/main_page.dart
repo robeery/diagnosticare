@@ -1,5 +1,6 @@
 import 'package:diagnosticare/test_buttons/gyroscope_button.dart';
 import 'package:diagnosticare/test_buttons/speaker/speaker_button.dart';
+import 'package:diagnosticare/test_buttons/touchscreen/touchscreen_button.dart';
 import 'package:flutter/material.dart';
 import 'package:diagnosticare/test_buttons/accelerometer_button.dart';
 import 'package:diagnosticare/test_buttons/simple_button.dart';
@@ -31,7 +32,7 @@ class MainPageState extends State<MainPage> {
       SimpleTestButton(isBusyNotifier: isBusyNotifier),
       SimpleTestButton(isBusyNotifier: isBusyNotifier),
       SimpleTestButton(isBusyNotifier: isBusyNotifier),
-      SimpleTestButton(isBusyNotifier: isBusyNotifier),
+
       SimpleTestButton(isBusyNotifier: isBusyNotifier),
       GyroscopeButton(isBusyNotifier: isBusyNotifier),
       CameraTestButton(
@@ -59,12 +60,15 @@ class MainPageState extends State<MainPage> {
         buttonName: 'Earpiece',
         testId: 6,
       ),
+      TouchScreenTestButton(isBusyNotifier: isBusyNotifier),
 
       SpeakerTestButton(
         isBusyNotifier: isBusyNotifier,
         buttonName: 'Stereo Sound',
         testId: 7,
       ),
+
+      TouchScreenTestButton(isBusyNotifier: isBusyNotifier),
     ];
   }
 

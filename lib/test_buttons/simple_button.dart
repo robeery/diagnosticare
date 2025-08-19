@@ -27,7 +27,7 @@ class _SimpleTestButtonState extends BaseButtonState<SimpleTestButton> {
         : TestResultCases.testNotDone;
     print(testResult);
     print("SimpleButton testId -> ${widget.testId}");
-    print(testData);
+    print(testData.length);
     return testResult;
   }
 
