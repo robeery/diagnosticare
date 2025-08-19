@@ -1,4 +1,5 @@
 import 'package:diagnosticare/test_buttons/model/test_result_cases.dart';
+import 'package:diagnosticare/test_buttons/touchscreen/touchscreen_test.dart';
 import 'package:flutter/material.dart';
 import '../base_button.dart';
 
@@ -11,7 +12,8 @@ class TouchScreenTestButton extends BaseButton {
          testId: 8,
          buttonName: 'Touchscreen',
          popUpName: 'Touchscreen Test',
-         popUpDescription: 'Temporary',
+         popUpDescription:
+             'After pressing the start button, you will be taken to a new page filled with squares. In order to successfully test the touchscreen, touch or drag with your fingers across all squares. If any given square cannot be pressed, the test will fail after 15 seconds of inactivity.',
          isBusyNotifier: isBusyNotifier,
        );
 
@@ -22,9 +24,17 @@ class TouchScreenTestButton extends BaseButton {
 class TouchScreenTestButtonState
     extends BaseButtonState<TouchScreenTestButton> {
   @override
-  runTest({TestResultCases? param}) {
-    // TODO: implement runTest
-    throw UnimplementedError();
+  runTest({TestResultCases? param}) async {
+    if (context.mounted) {
+      print('PUSH');
+      await Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => ButtonGridScreen(widgetId: widget.testId),
+        ),
+      );
+    }
+
+    setState(() {});
   }
 
   @override
@@ -58,7 +68,7 @@ class TouchScreenTestButtonState
               child: const Text('Start test'),
               onPressed: () {
                 Navigator.pop(context);
-                //runTest();
+                runTest();
               },
             ),
           ],
