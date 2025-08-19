@@ -1,4 +1,5 @@
 import 'package:diagnosticare/test_buttons/model/test_result_cases.dart';
+import 'package:diagnosticare/test_buttons/touchscreen/multitouch_test.dart';
 import 'package:diagnosticare/test_buttons/touchscreen/touchscreen_test.dart';
 import 'package:flutter/material.dart';
 import '../base_button.dart';
@@ -29,11 +30,12 @@ class TouchScreenTestButtonState
       print('PUSH');
       await Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => ButtonGridScreen(widgetId: widget.testId),
+          // builder: (context) => ButtonGridScreen(widgetId: widget.testId),
+          builder: (context) => MultiTouchTestScreen(),
         ),
       );
     }
-
+    print('touchscreen test finish');
     setState(() {});
   }
 

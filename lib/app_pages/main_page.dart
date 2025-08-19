@@ -60,7 +60,6 @@ class MainPageState extends State<MainPage> {
         buttonName: 'Earpiece',
         testId: 6,
       ),
-      TouchScreenTestButton(isBusyNotifier: isBusyNotifier),
 
       SpeakerTestButton(
         isBusyNotifier: isBusyNotifier,
