@@ -4,6 +4,8 @@ import 'package:diagnosticare/test_buttons/multitouch/multitouch_test.dart';
 import 'package:flutter/material.dart';
 import '../base_button.dart';
 
+//IDEA: Add a feature that counts and returns the number of multitouch points (simultaneous screen presses) supported
+//After the test implemented, optional test in which you put as many fingers (up to 10)
 class MultiTouchTestButton extends BaseButton {
   const MultiTouchTestButton({
     Key? key,

@@ -1,6 +1,7 @@
 import 'package:diagnosticare/test_buttons/gyroscope_button.dart';
 import 'package:diagnosticare/test_buttons/multitouch/multitouch_button.dart';
 import 'package:diagnosticare/test_buttons/speaker/speaker_button.dart';
+import 'package:diagnosticare/test_buttons/start_all/start_tests_button.dart';
 import 'package:diagnosticare/test_buttons/touchscreen/touchscreen_button.dart';
 import 'package:flutter/material.dart';
 import 'package:diagnosticare/test_buttons/accelerometer_button.dart';
@@ -26,13 +27,8 @@ class MainPageState extends State<MainPage> {
   void initState() {
     super.initState();
     testButtons = [
-      SimpleTestButton(isBusyNotifier: isBusyNotifier),
       AccelerometerTestButton(isBusyNotifier: isBusyNotifier),
       GyroscopeButton(isBusyNotifier: isBusyNotifier),
-      SimpleTestButton(isBusyNotifier: isBusyNotifier),
-      SimpleTestButton(isBusyNotifier: isBusyNotifier),
-      SimpleTestButton(isBusyNotifier: isBusyNotifier),
-      SimpleTestButton(isBusyNotifier: isBusyNotifier),
 
       SimpleTestButton(isBusyNotifier: isBusyNotifier),
       GyroscopeButton(isBusyNotifier: isBusyNotifier),
@@ -162,6 +158,7 @@ class MainPageState extends State<MainPage> {
                       : const SizedBox.shrink();
                 },
               ),
+              //StartTestButtons(),
             ],
           ),
         );
