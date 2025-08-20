@@ -1,7 +1,8 @@
+import 'package:diagnosticare/test_buttons/base_button.dart';
 import 'package:diagnosticare/test_buttons/gyroscope_button.dart';
 import 'package:diagnosticare/test_buttons/multitouch/multitouch_button.dart';
 import 'package:diagnosticare/test_buttons/speaker/speaker_button.dart';
-import 'package:diagnosticare/test_buttons/start_all/start_tests_button.dart';
+//import 'package:diagnosticare/test_buttons/start_all/start_tests_button.dart';
 import 'package:diagnosticare/test_buttons/touchscreen/touchscreen_button.dart';
 import 'package:flutter/material.dart';
 import 'package:diagnosticare/test_buttons/accelerometer_button.dart';
@@ -22,51 +23,71 @@ class MainPageState extends State<MainPage> {
   final ValueNotifier<bool> isBusyNotifier = ValueNotifier(false);
 
   late final List<Widget> testButtons;
+  late final List<GlobalKey<BaseButtonState>> buttonStateKeys;
 
   @override
   void initState() {
     super.initState();
-    testButtons = [
-      AccelerometerTestButton(isBusyNotifier: isBusyNotifier),
-      GyroscopeButton(isBusyNotifier: isBusyNotifier),
+    buttonStateKeys = List.generate(
+      10,
+      (index) => GlobalKey<BaseButtonState>(),
+    );
 
-      SimpleTestButton(isBusyNotifier: isBusyNotifier),
-      GyroscopeButton(isBusyNotifier: isBusyNotifier),
+    testButtons = [
+      // Individual test buttons only
+      AccelerometerTestButton(
+        key: buttonStateKeys[0],
+        isBusyNotifier: isBusyNotifier,
+      ),
+      GyroscopeButton(key: buttonStateKeys[1], isBusyNotifier: isBusyNotifier),
+      SimpleTestButton(key: buttonStateKeys[2], isBusyNotifier: isBusyNotifier),
+
       CameraTestButton(
+        key: buttonStateKeys[3],
         isBusyNotifier: isBusyNotifier,
         buttonName: 'Back Camera',
         testId: 3,
         cameraNumber: 0,
       ),
-
       CameraTestButton(
+        key: buttonStateKeys[4],
         isBusyNotifier: isBusyNotifier,
         buttonName: 'Front Camera',
         testId: 4,
         cameraNumber: 1,
       ),
-
       SpeakerTestButton(
+        key: buttonStateKeys[5],
         isBusyNotifier: isBusyNotifier,
         buttonName: 'Speaker',
         testId: 5,
       ),
-
       SpeakerTestButton(
+        key: buttonStateKeys[6],
         isBusyNotifier: isBusyNotifier,
         buttonName: 'Earpiece',
         testId: 6,
       ),
-
       SpeakerTestButton(
+        key: buttonStateKeys[7],
         isBusyNotifier: isBusyNotifier,
         buttonName: 'Stereo Sound',
         testId: 7,
       ),
-
-      TouchScreenTestButton(isBusyNotifier: isBusyNotifier),
-      MultiTouchTestButton(isBusyNotifier: isBusyNotifier),
+      TouchScreenTestButton(
+        key: buttonStateKeys[8],
+        isBusyNotifier: isBusyNotifier,
+      ),
+      MultiTouchTestButton(
+        key: buttonStateKeys[9], // You can adjust this index as needed
+        isBusyNotifier: isBusyNotifier,
+      ),
     ];
+  }
+
+  List<GlobalKey<BaseButtonState>>? getButtonKeys() {
+    // Return all test button keys
+    return buttonStateKeys;
   }
 
   @override

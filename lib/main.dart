@@ -4,6 +4,7 @@
 import 'package:diagnosticare/app_pages/test_data_page.dart';
 import 'package:diagnosticare/app_pages/main_page.dart';
 import 'package:diagnosticare/test_buttons/start_all/start_tests_button.dart';
+import 'package:diagnosticare/test_buttons/base_button.dart';
 import 'package:flutter/material.dart';
 import 'app_theme/app_theme.dart';
 
@@ -48,6 +49,10 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int selectedIndex = 0;
+
+  // Add GlobalKey to access MainPage
+  final GlobalKey<MainPageState> mainPageKey = GlobalKey<MainPageState>();
+
   @override
   Widget build(BuildContext context) {
     //final ValueNotifier<bool> isBusyNotifier = ValueNotifier(false);
@@ -73,7 +78,8 @@ class _MyHomePageState extends State<MyHomePage> {
     Widget page;
     switch (selectedIndex) {
       case 0:
-        page = MainPage(title: 'Certus');
+        // Add the key to MainPage
+        page = MainPage(key: mainPageKey, title: 'Certus');
       //break;
       case 1:
         page = TestDataPage();
@@ -101,7 +107,10 @@ class _MyHomePageState extends State<MyHomePage> {
               if (selectedIndex == 0)
                 Padding(
                   padding: const EdgeInsets.only(right: 5.0),
-                  child: StartTestButtons(),
+                  child: StartTestButtons(
+                    getButtonKeys: () =>
+                        mainPageKey.currentState?.getButtonKeys(),
+                  ),
                 ),
             ],
           ),
