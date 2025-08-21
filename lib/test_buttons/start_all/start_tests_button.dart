@@ -22,8 +22,12 @@ class StartTestButtonsState extends State<StartTestButtons> {
   static String popUpName = "Start all tests";
   static String popUpDescription =
       "This will trigger all diagnostic tests sequentially. Each test will show its own dialog and instructions.";
-
+  bool isRunning = false;
   void runAllTests() async {
+    setState(() {
+      isRunning = true;
+    });
+
     if (!mounted) {
       print("widget not mounted runAllTests functions");
       return;
@@ -53,6 +57,7 @@ class StartTestButtonsState extends State<StartTestButtons> {
       // Run each test and wait for it to complete
       print(buttonKeys.length);
       for (int i = 0; i < buttonKeys.length; i++) {
+        if (isRunning == false) return;
         // First, try to scroll to make the button visible
 
         await _scrollToButton(
@@ -79,7 +84,9 @@ class StartTestButtonsState extends State<StartTestButtons> {
           print('Test ${i + 1} completed: ${buttonState.widget.buttonName}');
         }
       }
-
+      setState(() {
+        isRunning = false;
+      });
       print("All ${buttonKeys.length} tests have been completed");
 
       // Show completion message
@@ -160,41 +167,47 @@ class StartTestButtonsState extends State<StartTestButtons> {
 
   void onPressedFunctionStart() {
     print("apasat");
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => StatefulBuilder(
-        builder: (context, setState) => AlertDialog(
-          title: Text(popUpName),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text(popUpDescription),
-              const SizedBox(height: 10),
-              Text(
-                'Total tests: ${widget.getButtonKeys?.call()?.length ?? 0}',
-                style: const TextStyle(fontWeight: FontWeight.bold),
+    if (!isRunning) {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => StatefulBuilder(
+          builder: (context, setState) => AlertDialog(
+            title: Text(popUpName),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(popUpDescription),
+                const SizedBox(height: 10),
+                Text(
+                  'Total tests: ${widget.getButtonKeys?.call()?.length ?? 0}',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                child: const Text('Cancel'),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+              TextButton(
+                child: const Text('Start test'),
+                onPressed: () {
+                  Navigator.pop(context);
+                  runAllTests();
+                },
               ),
             ],
           ),
-          actions: [
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            TextButton(
-              child: const Text('Start test'),
-              onPressed: () {
-                Navigator.pop(context);
-                runAllTests();
-              },
-            ),
-          ],
         ),
-      ),
-    );
+      );
+    } else {
+      setState(() {
+        isRunning = false;
+      });
+    }
   }
 
   @override
@@ -211,7 +224,9 @@ class StartTestButtonsState extends State<StartTestButtons> {
           foregroundColor: Colors.white,
           side: BorderSide(color: AppTheme.appBarBottomBorderColor, width: 2),
         ),
-        child: Icon(Icons.play_arrow, size: 24),
+        child: !isRunning
+            ? Icon(Icons.play_arrow, size: 24)
+            : Icon(Icons.stop, size: 24),
       ),
     );
   }
