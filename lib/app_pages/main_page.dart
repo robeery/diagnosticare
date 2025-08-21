@@ -78,8 +78,9 @@ class MainPageState extends State<MainPage> {
         key: buttonStateKeys[8],
         isBusyNotifier: isBusyNotifier,
       ),
+
       MultiTouchTestButton(
-        key: buttonStateKeys[9], // You can adjust this index as needed
+        key: buttonStateKeys[9],
         isBusyNotifier: isBusyNotifier,
       ),
     ];
@@ -121,8 +122,6 @@ class MainPageState extends State<MainPage> {
                 //second, if we use a lazy list builder (List<WidgetBuilder>) the test buttons on reconstruction aren't drawn with the last test icon
                 //also third: if we rebuild using lazy list builder or any other form or rebuild and scroll away while the test takes place, the app crashes
                 child: ListView.separated(
-                  key: Key("1"),
-                  primary: true,
                   padding: const EdgeInsets.all(60),
                   itemCount: testButtons.length,
                   itemBuilder: (context, index) {

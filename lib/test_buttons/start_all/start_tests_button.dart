@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:diagnosticare/app_pages/main_page.dart';
 import 'package:diagnosticare/app_theme/app_theme.dart';
 import 'package:diagnosticare/test_buttons/base_button.dart';
-import 'package:diagnosticare/test_buttons/model/test_result_cases.dart';
 import 'package:flutter/material.dart';
 
 class StartTestButtons extends StatefulWidget {
@@ -20,8 +19,13 @@ class StartTestButtonsState extends State<StartTestButtons> {
       "This will trigger all diagnostic tests sequentially. Each test will show its own dialog and instructions.";
 
   void runAllTests() async {
+    if (!mounted) {
+      print("widget not mounted runAllTests functions");
+      return;
+    }
     // Get button keys when we actually need them
     final buttonKeys = widget.getButtonKeys?.call();
+    print("$buttonKeys");
 
     if (buttonKeys == null || buttonKeys.isEmpty) {
       print("No test buttons found");
@@ -35,20 +39,25 @@ class StartTestButtonsState extends State<StartTestButtons> {
     }
 
     print("Starting all tests sequentially...");
-    //STEREO SOUND, MULTITOUCH AND TOUCHSCREEN RETURN BUTTONSTATE NULL, INVESTIGATE WHY
-    //FIX: MAKE ALL FUNCTIONS onPressed() peste tot de tip Future<void> .. await, maybe this will fix the sloppyness
+    //BUG1: STEREO SOUND, MULTITOUCH AND TOUCHSCREEN RETURN BUTTONSTATE NULL, INVESTIGATE WHY
+    //BUG2: MAKE ALL FUNCTIONS onPressed() peste tot de tip Future<void> .. await, maybe this will fix the sloppyness
+    //BUG2: that fixed it
+    //BUG1: they return null because the Buttons are generated lazy, FIX1: don't generate them lazy // FIX2: scroll to each one
     //investigate code more
     try {
       // Run each test and wait for it to complete
       print(buttonKeys.length);
       for (int i = 0; i < buttonKeys.length; i++) {
         final buttonState = buttonKeys[i].currentState;
-        print(buttonState);
+        if (buttonState == null)
+          print(
+            "i= $i ; buttonState = $buttonState ; buttonKeys[i] = ${buttonKeys[i]};}",
+          );
         if (buttonState != null && mounted) {
           print('Starting test ${i + 1}: ${buttonState.widget.buttonName}');
 
           // Call the button's onPressedFunction to show the dialog
-          buttonState.onPressedFunction();
+          await buttonState.onPressedFunction();
 
           // Wait for any navigation/dialogs to complete
           // This approach waits for the modal route (dialog) to be dismissed

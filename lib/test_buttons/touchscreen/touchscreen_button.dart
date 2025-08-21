@@ -1,5 +1,4 @@
 import 'package:diagnosticare/test_buttons/model/test_result_cases.dart';
-import 'package:diagnosticare/test_buttons/multitouch/multitouch_test.dart';
 import 'package:diagnosticare/test_buttons/touchscreen/touchscreen_test.dart';
 import 'package:flutter/material.dart';
 import '../base_button.dart';
@@ -39,7 +38,7 @@ class TouchScreenTestButtonState
   }
 
   @override
-  void onPressedFunction() {
+  Future<void> onPressedFunction() async {
     showDialog(
       context: context,
       barrierDismissible: false,

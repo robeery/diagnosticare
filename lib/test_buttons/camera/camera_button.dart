@@ -52,7 +52,7 @@ class CameraTestButtonState extends BaseButtonState<CameraTestButton> {
   }
 
   @override
-  void onPressedFunction() {
+  Future<void> onPressedFunction() async {
     showDialog(
       context: context,
       barrierDismissible: false,

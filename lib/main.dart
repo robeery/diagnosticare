@@ -4,7 +4,6 @@
 import 'package:diagnosticare/app_pages/test_data_page.dart';
 import 'package:diagnosticare/app_pages/main_page.dart';
 import 'package:diagnosticare/test_buttons/start_all/start_tests_button.dart';
-import 'package:diagnosticare/test_buttons/base_button.dart';
 import 'package:flutter/material.dart';
 import 'app_theme/app_theme.dart';
 
@@ -110,6 +109,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: StartTestButtons(
                     getButtonKeys: () =>
                         mainPageKey.currentState?.getButtonKeys(),
+                    //      getScrollController: () =>
+                    //          mainPageKey.currentState?.getScrollController(),
                   ),
                 ),
             ],

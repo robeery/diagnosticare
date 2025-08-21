@@ -36,7 +36,7 @@ abstract class BaseButtonState<T extends BaseButton> extends State<T> {
 
   //param is a possible needed variable for future tests, hence why it is an optional parameter
   runTest({TestResultCases? param});
-  void onPressedFunction();
+  Future<void> onPressedFunction();
 
   //function that saves tests results
   Future<void> saveTestData(List<TestResultCases> testData) async {

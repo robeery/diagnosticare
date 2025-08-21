@@ -82,7 +82,7 @@ class SpeakerTestButtonState extends BaseButtonState<SpeakerTestButton> {
   }
 
   @override
-  void onPressedFunction() {
+  Future<void> onPressedFunction() async {
     showDialog(
       context: context,
       barrierDismissible: false,

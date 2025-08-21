@@ -81,7 +81,7 @@ class GyroscopeButtonState extends BaseButtonState<GyroscopeButton> {
   }
 
   @override
-  void onPressedFunction() async {
+  Future<void> onPressedFunction() async {
     widget.isBusyNotifier.value = true;
 
     showDialog(
