@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:diagnosticare/app_pages/main_page.dart';
 import 'package:diagnosticare/app_theme/app_theme.dart';
 import 'package:diagnosticare/test_buttons/base_button.dart';
+import 'package:diagnosticare/test_buttons/model/test_result_cases.dart';
 import 'package:flutter/material.dart';
 
 class StartTestButtons extends StatefulWidget {
@@ -52,25 +53,41 @@ class StartTestButtonsState extends State<StartTestButtons> {
     //BUG2: MAKE ALL FUNCTIONS onPressed() peste tot de tip Future<void> .. await, maybe this will fix the sloppyness
     //BUG2: that fixed it
     //BUG1: they return null because the Buttons are generated lazy, FIX1: don't generate them lazy // FIX2: scroll to each one
+    //BUG1: fixed with FIX2
     //investigate code more
+    /*
+    final notDoneTestButtons = buttonKeys
+        .where(
+          (key) => key.currentState?.testResult == TestResultCases.testNotDone,
+        )
+        .toList();
+    */
     try {
       // Run each test and wait for it to complete
       print(buttonKeys.length);
       for (int i = 0; i < buttonKeys.length; i++) {
         if (isRunning == false) return;
         // First, try to scroll to make the button visible
+        final buttonState = buttonKeys[i].currentState;
 
-        await _scrollToButton(
-          i,
-        ); // <-- HERE: Scroll to each button before testing
+        //if(testData[buttonState!.widget.testId]==TestResultCases.testNotDone)
+        //to add later, maybe filter buttonKeys vector by testResult;
+
+        _scrollToButton(i); // <-- HERE: Scroll to each button before testing
 
         // Small delay to ensure the widget is built
-        await Future.delayed(const Duration(milliseconds: 300));
-        final buttonState = buttonKeys[i].currentState;
-        if (buttonState == null)
-          print(
-            "i= $i ; buttonState = $buttonState ; buttonKeys[i] = ${buttonKeys[i]};}",
-          );
+        await Future.delayed(const Duration(milliseconds: 200));
+
+        print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+        print(testData[buttonState!.widget.testId]);
+        print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+
+        /*
+          if (buttonState == null)
+            print(
+              "i= $i ; buttonState = $buttonState ; buttonKeys[i] = ${buttonKeys[i]};}",
+            );
+            */
         if (buttonState != null && mounted) {
           print('Starting test ${i + 1}: ${buttonState.widget.buttonName}');
 
@@ -124,7 +141,7 @@ class StartTestButtonsState extends State<StartTestButtons> {
     await Future.delayed(const Duration(milliseconds: 100));
   }
 
-  Future<void> _scrollToButton(int index) async {
+  void _scrollToButton(int index) {
     print("_scrollToButton for index $index");
 
     try {
@@ -149,7 +166,7 @@ class StartTestButtonsState extends State<StartTestButtons> {
       print("Smoothly scrolling to offset $safeTargetOffset");
 
       // Use animateTo for smooth transition
-      await scrollController.animateTo(
+      scrollController.animateTo(
         safeTargetOffset,
         duration: const Duration(milliseconds: 200), // Smooth 800ms animation
         curve: Curves.easeInOut, // Nice easing curve

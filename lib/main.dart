@@ -3,6 +3,7 @@
 //import 'dart:developer' show log;
 import 'package:diagnosticare/app_pages/test_data_page.dart';
 import 'package:diagnosticare/app_pages/main_page.dart';
+import 'package:diagnosticare/test_buttons/start_all/reset_test_data_button.dart';
 import 'package:diagnosticare/test_buttons/start_all/start_tests_button.dart';
 import 'package:flutter/material.dart';
 import 'app_theme/app_theme.dart';
@@ -112,6 +113,11 @@ class _MyHomePageState extends State<MyHomePage> {
                     getScrollController: () =>
                         mainPageKey.currentState?.getScrollController(),
                   ),
+                ),
+              if (selectedIndex == 1)
+                Padding(
+                  padding: const EdgeInsets.only(right: 5.0),
+                  child: ResetTestDataButton(),
                 ),
             ],
           ),
