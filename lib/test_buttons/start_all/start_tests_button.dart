@@ -35,7 +35,7 @@ class StartTestButtonsState extends State<StartTestButtons> {
     }
     // Get button keys when we actually need them
     final buttonKeys = widget.getButtonKeys?.call();
-    print("$buttonKeys");
+    //print("$buttonKeys");
 
     if (buttonKeys == null || buttonKeys.isEmpty) {
       print("No test buttons found");
@@ -68,20 +68,30 @@ class StartTestButtonsState extends State<StartTestButtons> {
       for (int i = 0; i < buttonKeys.length; i++) {
         if (isRunning == false) return;
         // First, try to scroll to make the button visible
-        final buttonState = buttonKeys[i].currentState;
 
         //if(testData[buttonState!.widget.testId]==TestResultCases.testNotDone)
         //to add later, maybe filter buttonKeys vector by testResult;
-
-        _scrollToButton(i); // <-- HERE: Scroll to each button before testing
+        /*
+        if (testData[buttonKeys[i].currentState.widget.testId] !=
+            TestResultCases.testNotDone) {
+          continue;
+        }
+        */
+        await _scrollToButton(
+          i,
+        ); // <-- HERE: Scroll to each button before testing
+        final buttonState = buttonKeys[i].currentState;
 
         // Small delay to ensure the widget is built
         await Future.delayed(const Duration(milliseconds: 200));
-
+        if (i == 0) {
+          await Future.delayed(const Duration(milliseconds: 300));
+        }
+        /*
         print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
         print(testData[buttonState!.widget.testId]);
         print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-
+        */
         /*
           if (buttonState == null)
             print(
@@ -141,7 +151,7 @@ class StartTestButtonsState extends State<StartTestButtons> {
     await Future.delayed(const Duration(milliseconds: 100));
   }
 
-  void _scrollToButton(int index) {
+  Future<void> _scrollToButton(int index) async {
     print("_scrollToButton for index $index");
 
     try {
@@ -166,14 +176,14 @@ class StartTestButtonsState extends State<StartTestButtons> {
       print("Smoothly scrolling to offset $safeTargetOffset");
 
       // Use animateTo for smooth transition
-      scrollController.animateTo(
+      await scrollController.animateTo(
         safeTargetOffset,
-        duration: const Duration(milliseconds: 200), // Smooth 800ms animation
+        duration: const Duration(milliseconds: 300), // Smooth 800ms animation
         curve: Curves.easeInOut, // Nice easing curve
       );
 
       // Short delay after animation completes
-      // await Future.delayed(const Duration(milliseconds: 100));
+      await Future.delayed(const Duration(milliseconds: 100));
 
       print("Smooth scroll completed for index $index");
     } catch (e) {
