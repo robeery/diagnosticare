@@ -21,6 +21,15 @@ class MainPage extends StatefulWidget {
 
 class MainPageState extends State<MainPage> {
   final ValueNotifier<bool> isBusyNotifier = ValueNotifier(false);
+  late final ScrollController scrollController = ScrollController();
+  ScrollController? getScrollController() {
+    try {
+      return scrollController.hasClients ? scrollController : null;
+    } catch (e) {
+      print("Error getting scroll controller: $e");
+      return null;
+    }
+  }
 
   late final List<Widget> testButtons;
   late final List<GlobalKey<BaseButtonState>> buttonStateKeys;
@@ -112,16 +121,20 @@ class MainPageState extends State<MainPage> {
               RawScrollbar(
                 //to be optimized
                 //hints: ListView.separated, ListView builder
+                controller: scrollController,
                 thumbColor: AppTheme.appBarBottomBorderColor,
                 radius: Radius.circular(10),
-                // trackColor: const Color.fromARGB(255, 54, 244, 168),
-                // trackBorderColor: Colors.amber,
-                // trackVisibility: true,
+
+                trackColor: const Color.fromARGB(255, 54, 244, 168),
+                trackBorderColor: Colors.amber,
+                trackVisibility: true,
 
                 //first, if we use a normal list (List<Widget>) that renders all the buttons at once there may be optimization issues
                 //second, if we use a lazy list builder (List<WidgetBuilder>) the test buttons on reconstruction aren't drawn with the last test icon
                 //also third: if we rebuild using lazy list builder or any other form or rebuild and scroll away while the test takes place, the app crashes
                 child: ListView.separated(
+                  controller: scrollController,
+                  physics: const AlwaysScrollableScrollPhysics(),
                   padding: const EdgeInsets.all(60),
                   itemCount: testButtons.length,
                   itemBuilder: (context, index) {
@@ -138,29 +151,6 @@ class MainPageState extends State<MainPage> {
                   separatorBuilder: (context, index) =>
                       const SizedBox(height: 30),
                 ),
-
-                //experimental format for homepage
-                /*
-            child: ListWheelScrollView(
-              itemExtent: 115,
-              children: [
-                SizedBox(height: 10),
-                SimpleTestButton(),
-                SizedBox(height: 10),
-                AccelerometerTestButton(),
-                SizedBox(height: 10),
-                GyroscopeButton(),
-                SizedBox(height: 10),
-                SimpleTestButton(),
-                SizedBox(height: 10),
-                SimpleTestButton(),
-                SizedBox(height: 5),
-                SimpleTestButton(),
-                SizedBox(height: 10),
-                SimpleTestButton(),
-              ],
-            ),
-            */
               ),
               ValueListenableBuilder<bool>(
                 valueListenable: isBusyNotifier,
@@ -184,5 +174,21 @@ class MainPageState extends State<MainPage> {
         );
       },
     );
+  }
+
+  @override
+  void dispose() {
+    // Only dispose if the controller was actually created and used
+    if (scrollController.hasClients) {
+      scrollController.dispose();
+    } else {
+      // If no clients, we can still dispose but more safely
+      try {
+        scrollController.dispose();
+      } catch (e) {
+        print("Error disposing scroll controller: $e");
+      }
+    }
+    super.dispose();
   }
 }

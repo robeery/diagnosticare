@@ -6,8 +6,13 @@ import 'package:flutter/material.dart';
 
 class StartTestButtons extends StatefulWidget {
   final List<GlobalKey<BaseButtonState>>? Function()? getButtonKeys;
+  final ScrollController? Function()? getScrollController;
 
-  const StartTestButtons({super.key, this.getButtonKeys});
+  const StartTestButtons({
+    super.key,
+    this.getButtonKeys,
+    this.getScrollController,
+  });
 
   @override
   State<StartTestButtons> createState() => StartTestButtonsState();
@@ -48,6 +53,14 @@ class StartTestButtonsState extends State<StartTestButtons> {
       // Run each test and wait for it to complete
       print(buttonKeys.length);
       for (int i = 0; i < buttonKeys.length; i++) {
+        // First, try to scroll to make the button visible
+
+        await _scrollToButton(
+          i,
+        ); // <-- HERE: Scroll to each button before testing
+
+        // Small delay to ensure the widget is built
+        await Future.delayed(const Duration(milliseconds: 300));
         final buttonState = buttonKeys[i].currentState;
         if (buttonState == null)
           print(
@@ -101,7 +114,48 @@ class StartTestButtonsState extends State<StartTestButtons> {
     }
 
     // Additional small delay to ensure everything is settled
-    await Future.delayed(const Duration(milliseconds: 200));
+    await Future.delayed(const Duration(milliseconds: 100));
+  }
+
+  Future<void> _scrollToButton(int index) async {
+    print("_scrollToButton for index $index");
+
+    try {
+      // Get the scroll controller directly from the callback
+      final scrollController = widget.getScrollController?.call();
+
+      if (scrollController == null) {
+        print('scrollController is null - skipping scroll');
+        return;
+      }
+
+      if (!scrollController.hasClients) {
+        print('scrollController has no clients - skipping scroll');
+        return;
+      }
+
+      // Calculate target position
+      final targetOffset = index * 145.0;
+      final maxExtent = scrollController.position.maxScrollExtent;
+      final safeTargetOffset = targetOffset.clamp(0.0, maxExtent);
+
+      print("Smoothly scrolling to offset $safeTargetOffset");
+
+      // Use animateTo for smooth transition
+      await scrollController.animateTo(
+        safeTargetOffset,
+        duration: const Duration(milliseconds: 200), // Smooth 800ms animation
+        curve: Curves.easeInOut, // Nice easing curve
+      );
+
+      // Short delay after animation completes
+      // await Future.delayed(const Duration(milliseconds: 100));
+
+      print("Smooth scroll completed for index $index");
+    } catch (e) {
+      print("Error scrolling: $e - continuing anyway");
+      // Don't rethrow, just continue
+    }
   }
 
   void onPressedFunctionStart() {

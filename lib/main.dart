@@ -109,8 +109,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: StartTestButtons(
                     getButtonKeys: () =>
                         mainPageKey.currentState?.getButtonKeys(),
-                    //      getScrollController: () =>
-                    //          mainPageKey.currentState?.getScrollController(),
+                    getScrollController: () =>
+                        mainPageKey.currentState?.getScrollController(),
                   ),
                 ),
             ],
