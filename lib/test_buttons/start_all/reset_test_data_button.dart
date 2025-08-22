@@ -8,11 +8,18 @@ class ResetTestDataButton extends StatelessWidget {
   static String popUpName = "Reset all test data";
   static String popUpDescription =
       "This will reset all test data stored on the device. Are you sure this is what you want to do?";
-  void resetData() {
+
+  late Set<void> Function() callback;
+  ResetTestDataButton(Set<void> Function() param0) {
+    callback = param0;
+  }
+
+  void resetData() async {
     for (int i = 0; i < testData.length; i++) {
       testData[i] = TestResultCases.testNotDone;
     }
-    saveTestData(testData);
+    await saveTestData(testData);
+    callback.call();
   }
 
   Future<void> saveTestData(List<TestResultCases> testData) async {

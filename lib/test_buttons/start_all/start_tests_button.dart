@@ -55,13 +55,20 @@ class StartTestButtonsState extends State<StartTestButtons> {
     //BUG1: they return null because the Buttons are generated lazy, FIX1: don't generate them lazy // FIX2: scroll to each one
     //BUG1: fixed with FIX2
     //investigate code more
-    /*
+
+    ///!!!!!!!!!
+    ///I should filter by testData[]
     final notDoneTestButtons = buttonKeys
         .where(
           (key) => key.currentState?.testResult == TestResultCases.testNotDone,
         )
         .toList();
-    */
+    print(
+      'XXXXXXXXX notDoneTestButtons == ${notDoneTestButtons.length} XXXXXXXXX',
+    );
+    for (int i = 0; i < notDoneTestButtons.length; i++) {
+      print(notDoneTestButtons[i].currentState!.widget.buttonName);
+    }
     try {
       // Run each test and wait for it to complete
       print(buttonKeys.length);

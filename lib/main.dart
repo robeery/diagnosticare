@@ -1,6 +1,8 @@
 //de organizat si importurile astea ca sa nu am 100..
 
 //import 'dart:developer' show log;
+import 'dart:developer';
+
 import 'package:diagnosticare/app_pages/test_data_page.dart';
 import 'package:diagnosticare/app_pages/main_page.dart';
 import 'package:diagnosticare/test_buttons/start_all/reset_test_data_button.dart';
@@ -87,6 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
       default:
         throw UnimplementedError('no widget for $selectedIndex');
     }
+
     return LayoutBuilder(
       builder: (context, constraints) {
         return Scaffold(
@@ -117,7 +120,9 @@ class _MyHomePageState extends State<MyHomePage> {
               if (selectedIndex == 1)
                 Padding(
                   padding: const EdgeInsets.only(right: 5.0),
-                  child: ResetTestDataButton(),
+                  child: ResetTestDataButton(
+                    () => {log("Calling callback"), setState(() {})},
+                  ),
                 ),
             ],
           ),
