@@ -36,10 +36,7 @@ class MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    buttonStateKeys = List.generate(
-      10,
-      (index) => GlobalKey<BaseButtonState>(),
-    );
+    buttonStateKeys = List.generate(9, (index) => GlobalKey<BaseButtonState>());
 
     testButtons = [
       // Individual test buttons only
@@ -48,47 +45,47 @@ class MainPageState extends State<MainPage> {
         isBusyNotifier: isBusyNotifier,
       ),
       GyroscopeButton(key: buttonStateKeys[1], isBusyNotifier: isBusyNotifier),
-      SimpleTestButton(key: buttonStateKeys[2], isBusyNotifier: isBusyNotifier),
 
+      // SimpleTestButton(key: buttonStateKeys[2], isBusyNotifier: isBusyNotifier),
       CameraTestButton(
-        key: buttonStateKeys[3],
+        key: buttonStateKeys[2],
         isBusyNotifier: isBusyNotifier,
         buttonName: 'Back Camera',
         testId: 3,
         cameraNumber: 0,
       ),
       CameraTestButton(
-        key: buttonStateKeys[4],
+        key: buttonStateKeys[3],
         isBusyNotifier: isBusyNotifier,
         buttonName: 'Front Camera',
         testId: 4,
         cameraNumber: 1,
       ),
       SpeakerTestButton(
-        key: buttonStateKeys[5],
+        key: buttonStateKeys[4],
         isBusyNotifier: isBusyNotifier,
         buttonName: 'Speaker',
         testId: 5,
       ),
       SpeakerTestButton(
-        key: buttonStateKeys[6],
+        key: buttonStateKeys[5],
         isBusyNotifier: isBusyNotifier,
         buttonName: 'Earpiece',
         testId: 6,
       ),
       SpeakerTestButton(
-        key: buttonStateKeys[7],
+        key: buttonStateKeys[6],
         isBusyNotifier: isBusyNotifier,
         buttonName: 'Stereo Sound',
         testId: 7,
       ),
       TouchScreenTestButton(
-        key: buttonStateKeys[8],
+        key: buttonStateKeys[7],
         isBusyNotifier: isBusyNotifier,
       ),
 
       MultiTouchTestButton(
-        key: buttonStateKeys[9],
+        key: buttonStateKeys[8],
         isBusyNotifier: isBusyNotifier,
       ),
     ];

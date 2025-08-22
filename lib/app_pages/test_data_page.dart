@@ -87,8 +87,9 @@ class _TestDataCardState extends State<TestDataCard> {
 
   @override
   Widget build(BuildContext context) {
+    //the i starts from one because 0 is reserved for "simple button"
     final filteredTestResults = [
-      for (int i = 0; i < testData.length; i++)
+      for (int i = 1; i < testData.length; i++)
         if (testData[i] == widget.type) TestDataCard.testNames[i],
     ];
 
