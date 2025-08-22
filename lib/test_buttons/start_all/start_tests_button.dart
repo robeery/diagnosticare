@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:diagnosticare/app_pages/main_page.dart';
 import 'package:diagnosticare/app_theme/app_theme.dart';
 import 'package:diagnosticare/test_buttons/base_button.dart';
 import 'package:diagnosticare/test_buttons/model/test_result_cases.dart';
@@ -63,30 +62,32 @@ class StartTestButtonsState extends State<StartTestButtons> {
           (key) => key.currentState?.testResult == TestResultCases.testNotDone,
         )
         .toList();
+    /*
     print(
       'XXXXXXXXX notDoneTestButtons == ${notDoneTestButtons.length} XXXXXXXXX',
     );
+    */
     for (int i = 0; i < notDoneTestButtons.length; i++) {
       print(notDoneTestButtons[i].currentState!.widget.buttonName);
     }
     try {
       // Run each test and wait for it to complete
-      print(buttonKeys.length);
+      //print(buttonKeys.length);
       for (int i = 0; i < buttonKeys.length; i++) {
         if (isRunning == false) return;
         // First, try to scroll to make the button visible
 
         //if(testData[buttonState!.widget.testId]==TestResultCases.testNotDone)
         //to add later, maybe filter buttonKeys vector by testResult;
+        //we can't filter by testResult because the testResult field is not properly implemented in BaseButtonClass
+
         /*
         if (testData[buttonKeys[i].currentState.widget.testId] !=
             TestResultCases.testNotDone) {
           continue;
         }
         */
-        await _scrollToButton(
-          i,
-        ); // <-- HERE: Scroll to each button before testing
+        await _scrollToButton(i); // Scroll to each button before testing
         final buttonState = buttonKeys[i].currentState;
 
         // Small delay to ensure the widget is built
@@ -200,7 +201,6 @@ class StartTestButtonsState extends State<StartTestButtons> {
   }
 
   void onPressedFunctionStart() {
-    print("apasat");
     if (!isRunning) {
       showDialog(
         context: context,

@@ -26,14 +26,14 @@ class MultiTouchTestButtonState extends BaseButtonState<MultiTouchTestButton> {
   @override
   runTest({TestResultCases? param}) async {
     if (context.mounted) {
-      print('PUSH');
+      //print('PUSH');
       await Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => MultiTouchTestScreen(widgetId: widget.testId),
         ),
       );
     }
-    print('multitouch test finish');
+    //print('multitouch test finish');
     setState(() {});
   }
 

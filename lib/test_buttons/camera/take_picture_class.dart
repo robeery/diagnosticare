@@ -97,6 +97,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
         child: const Icon(Icons.camera_alt),
       ),
 
+      //Not really needed, to be decided if we will remove it or not
       //Cancel button - to be worked on later, it has a weird placement
       /*
       bottomNavigationBar: Column(

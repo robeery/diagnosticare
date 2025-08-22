@@ -32,10 +32,14 @@ class AccelerometerTestButtonState
     bool xPassed = false, yPassed = false, zPassed = false;
     completer = Completer<TestResultCases>();
     int numberOfTests = 0;
+    //segments of old timebased implementation
+
     //var testStartTime = DateTime.now();
     //var timePassed = Duration();
     subscription = userAccelerometerEvents.listen(
       (UserAccelerometerEvent event) {
+        //segments of old timebased implementation
+
         //timePassed = testStartTime.difference(event.timestamp);
         //print(timePassed.inSeconds);
         //if (timePassed.inSeconds.abs() > 7) {
@@ -78,10 +82,10 @@ class AccelerometerTestButtonState
   @override
   Future<TestResultCases> runTest({TestResultCases? param}) async {
     TestResultCases testResult = await accelerometerTest();
-    print("@runTest -> accelemeter_button $testResult");
 
-    print("Accelerometru testId -> ${widget.testId}");
-    print(testData);
+    //print("@runTest -> accelemeter_button $testResult");
+    //print("Accelerometru testId -> ${widget.testId}");
+    //print(testData);
     return testResult;
   }
 
@@ -138,10 +142,10 @@ class AccelerometerTestButtonState
               onPressed: () async {
                 //this function needs a lot of optimization and revision, to be done later
                 //one visual bug is the fact that after the press of 'Fail test' the AlertDialog updates the text into 'Start test' again before closing
+                //maybe add an 500ms timer await
 
                 if (!isTestRunning) {
                   setState(() {
-                    //isTestRunning = isTestRunning ? false : true;
                     isTestRunning = true;
                   });
 
@@ -169,8 +173,6 @@ class AccelerometerTestButtonState
 
                   if (context.mounted) {
                     setState(() {
-                      //if we add Navigator.pop() here the app crashes (black screen), so better don't do that
-                      //Navigator.pop(context);
                       isTestRunning = false;
                     });
                   }

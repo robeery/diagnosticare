@@ -104,9 +104,3 @@ abstract class BaseButtonState<T extends BaseButton> extends State<T> {
     );
   }
 }
-//future buttons:
-//gyroscope
-//touchscreen
-//speakers
-//microphone
-//camera

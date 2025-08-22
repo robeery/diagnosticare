@@ -28,10 +28,12 @@ class GyroscopeButtonState extends BaseButtonState<GyroscopeButton> {
     bool xPassed = false, yPassed = false, zPassed = false;
     completer = Completer<TestResultCases>();
     int numberOfTests = 0;
+    //old gyroscope implementation, time based
     //var testStartTime = DateTime.now();
     //var timePassed = Duration();
     subscription = gyroscopeEvents.listen(
       (GyroscopeEvent event) {
+        //old gyroscope implementation, time based
         //timePassed = testStartTime.difference(event.timestamp);
         //print(timePassed.inSeconds);
         //if (timePassed.inSeconds.abs() > 7) {
@@ -74,9 +76,9 @@ class GyroscopeButtonState extends BaseButtonState<GyroscopeButton> {
   @override
   Future<TestResultCases> runTest({TestResultCases? param}) async {
     TestResultCases testResult = await gyroscopeTest();
-    print("@runTest -> gyroscope_button $testResult");
 
-    print("Gyroscope testId -> ${widget.testId}");
+    //print("@runTest -> gyroscope_button $testResult");
+    //print("Gyroscope testId -> ${widget.testId}");
     return testResult;
   }
 
@@ -136,9 +138,9 @@ class GyroscopeButtonState extends BaseButtonState<GyroscopeButton> {
                 //this function needs a lot of optimization and revision, to be done later
                 //one visual bug is the fact that after the press of 'Fail test' the AlertDialog updates the text into 'Start test' again before closing
                 //to be fixed later
+                //maybe add a 500ms delay
                 if (!isTestRunning) {
                   setState(() {
-                    //isTestRunning = isTestRunning ? false : true;
                     isTestRunning = true;
                   });
 
@@ -148,14 +150,12 @@ class GyroscopeButtonState extends BaseButtonState<GyroscopeButton> {
 
                   if (context.mounted) {
                     Navigator.pop(context);
-                    setState(() {
-                      //isTestRunning = false;
-                    });
+                    setState(() {});
                     widget.isBusyNotifier.value = false;
                     isTestRunning = false;
                   }
                 } else {
-                  print('Fail button press');
+                  //print('Fail button press');
 
                   subscription.cancel();
 
@@ -164,16 +164,7 @@ class GyroscopeButtonState extends BaseButtonState<GyroscopeButton> {
                   }
                   testData[widget.testId] = TestResultCases.testFailed;
                   await saveTestData(testData);
-                  /*
-                  if (context.mounted) {
-                    setState(() {
-                      //if we add Navigator.pop() here the app crashes (black screen), so better don't do that
-                      //Navigator.pop(context);
-                      //isTestRunning = false;
-                    });
-                  }
-                  */
-                  //isTestRunning = false;
+
                   widget.isBusyNotifier.value = false;
                 }
               },
@@ -185,6 +176,7 @@ class GyroscopeButtonState extends BaseButtonState<GyroscopeButton> {
   }
 }
 
+//in case of needed
 //old gyroscope logic
 /*
 class GyroscopeButton extends BaseButton {

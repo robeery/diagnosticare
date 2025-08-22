@@ -2,7 +2,6 @@ import 'package:diagnosticare/test_buttons/base_button.dart';
 import 'package:diagnosticare/test_buttons/gyroscope_button.dart';
 import 'package:diagnosticare/test_buttons/multitouch/multitouch_button.dart';
 import 'package:diagnosticare/test_buttons/speaker/speaker_button.dart';
-//import 'package:diagnosticare/test_buttons/start_all/start_tests_button.dart';
 import 'package:diagnosticare/test_buttons/touchscreen/touchscreen_button.dart';
 import 'package:flutter/material.dart';
 import 'package:diagnosticare/test_buttons/accelerometer_button.dart';
@@ -119,8 +118,6 @@ class MainPageState extends State<MainPage> {
                 ),
               ),
               RawScrollbar(
-                //to be optimized
-                //hints: ListView.separated, ListView builder
                 controller: scrollController,
                 thumbColor: AppTheme.appBarBottomBorderColor,
                 radius: Radius.circular(10),
@@ -132,6 +129,8 @@ class MainPageState extends State<MainPage> {
                 //first, if we use a normal list (List<Widget>) that renders all the buttons at once there may be optimization issues
                 //second, if we use a lazy list builder (List<WidgetBuilder>) the test buttons on reconstruction aren't drawn with the last test icon
                 //also third: if we rebuild using lazy list builder or any other form or rebuild and scroll away while the test takes place, the app crashes
+
+                //built lazy:
                 child: ListView.separated(
                   controller: scrollController,
                   physics: const AlwaysScrollableScrollPhysics(),

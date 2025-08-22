@@ -12,7 +12,6 @@ import 'app_theme/app_theme.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-
   runApp(const MyApp());
 }
 
@@ -57,32 +56,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    //final ValueNotifier<bool> isBusyNotifier = ValueNotifier(false);
-    //here come two issues:
-    //first, if we use a normal list (List<Widget>) that renders all the buttons at once there may be optimization issues
-    //second, if we use a lazy list builder (List<WidgetBuilder>) the test buttons on reconstruction aren't drawn with the last test icon
-    //also third: if we rebuild using lazy list builder or any other form or rebuild and scroll away while the test takes place, the app crashes
-    /*
-    final List<Widget> testButtonsBuilders = [
-      SimpleTestButton(isBusyNotifier: isBusyNotifier),
-      AccelerometerTestButton(isBusyNotifier: isBusyNotifier),
-      GyroscopeButton(isBusyNotifier: isBusyNotifier),
-      SimpleTestButton(isBusyNotifier: isBusyNotifier),
-      SimpleTestButton(isBusyNotifier: isBusyNotifier),
-      SimpleTestButton(isBusyNotifier: isBusyNotifier),
-      SimpleTestButton(isBusyNotifier: isBusyNotifier),
-      SimpleTestButton(isBusyNotifier: isBusyNotifier),
-      SimpleTestButton(isBusyNotifier: isBusyNotifier),
-      GyroscopeButton(isBusyNotifier: isBusyNotifier),
-    ];
-    */
-
     Widget page;
     switch (selectedIndex) {
       case 0:
-        // Add the key to MainPage
         page = MainPage(key: mainPageKey, title: 'Certus');
-      //break;
+
       case 1:
         page = TestDataPage();
 
@@ -130,7 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
             decoration: const BoxDecoration(
               border: Border(
                 top: BorderSide(
-                  color: AppTheme.appBarBottomBorderColor, // Orange border
+                  color: AppTheme.appBarBottomBorderColor,
                   width: 2,
                 ),
               ),
@@ -143,7 +121,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
                 NavigationDestination(
                   icon: Icon(Icons.file_copy),
-                  label: 'Test Data',
+                  label: 'Tests Results',
                 ),
               ],
               onDestinationSelected: (int index) {
@@ -161,43 +139,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-
-//old checkbox widget
-/*
-class CheckBox extends StatefulWidget {
-  const CheckBox({super.key});
-
-  @override
-  State<CheckBox> createState() => _CheckBoxState();
-}
-
-class _CheckBoxState extends State<CheckBox> {
-  bool isChecked = false;
-
-  @override
-  Widget build(BuildContext context) {
-    Color getColor(Set<WidgetState> states) {
-      const Set<WidgetState> interactiveStates = <WidgetState>{
-        WidgetState.pressed,
-        WidgetState.hovered,
-        WidgetState.focused,
-      };
-      if (states.any(interactiveStates.contains)) {
-        return Colors.blue;
-      }
-      return Colors.red;
-    }
-
-    return Checkbox(
-      checkColor: Colors.white,
-      fillColor: WidgetStateProperty.resolveWith(getColor),
-      value: isChecked,
-      onChanged: (bool? value) {
-        setState(() {
-          isChecked = value!;
-        });
-      },
-    );
-  }
-}
-*/
