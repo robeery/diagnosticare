@@ -83,7 +83,7 @@ class SpeakerTestButtonState extends BaseButtonState<SpeakerTestButton> {
 
   @override
   Future<void> onPressedFunction() async {
-    showDialog(
+    await showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) => StatefulBuilder(
@@ -106,9 +106,10 @@ class SpeakerTestButtonState extends BaseButtonState<SpeakerTestButton> {
             ),
             TextButton(
               child: const Text('Start test'),
-              onPressed: () {
+              onPressed: () async {
+                // Navigator.pop(context);
+                await runTest();
                 Navigator.pop(context);
-                runTest();
               },
             ),
           ],

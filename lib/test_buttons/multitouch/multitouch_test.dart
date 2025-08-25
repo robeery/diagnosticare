@@ -143,7 +143,7 @@ class _MultiTouchTestScreenState extends State<MultiTouchTestScreen> {
 
     if (Navigator.of(context).canPop()) {
       print("_exitScreen -> POP");
-      Navigator.of(context).pop(success);
+      Navigator.of(context).pop();
     }
   }
 

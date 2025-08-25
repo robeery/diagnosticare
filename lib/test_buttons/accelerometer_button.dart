@@ -104,7 +104,7 @@ class AccelerometerTestButtonState
   Future<void> onPressedFunction() async {
     widget.isBusyNotifier.value = true;
 
-    showDialog(
+    await showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) => StatefulBuilder(

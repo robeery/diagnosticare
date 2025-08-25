@@ -147,6 +147,8 @@ class StartTestButtonsState extends State<StartTestButtons> {
   }
 
   Future<void> _waitForTestCompletion() async {
+    //the program before relied on this function to go through all tests one at a time, now it is not needed
+
     // Wait for the dialog to appear
     await Future.delayed(const Duration(milliseconds: 100));
 

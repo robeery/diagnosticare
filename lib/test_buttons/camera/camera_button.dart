@@ -53,7 +53,7 @@ class CameraTestButtonState extends BaseButtonState<CameraTestButton> {
 
   @override
   Future<void> onPressedFunction() async {
-    showDialog(
+    await showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) => StatefulBuilder(
@@ -87,8 +87,8 @@ class CameraTestButtonState extends BaseButtonState<CameraTestButton> {
             ),
             TextButton(
               child: const Text('Start test'),
-              onPressed: () {
-                runTest();
+              onPressed: () async {
+                await runTest();
                 Navigator.pop(context);
               },
             ),
