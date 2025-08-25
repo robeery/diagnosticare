@@ -39,7 +39,8 @@ class TouchScreenTestButtonState
 
   @override
   Future<void> onPressedFunction() async {
-    await showDialog(
+    bool startTest;
+    startTest = await showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) => StatefulBuilder(
@@ -61,20 +62,23 @@ class TouchScreenTestButtonState
             TextButton(
               child: const Text('Cancel'),
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.pop(context, false);
               },
             ),
             TextButton(
               child: const Text('Start test'),
               onPressed: () async {
                 //Navigator.pop(context);
-                await runTest();
-                Navigator.pop(context);
+                //await runTest();
+                Navigator.pop(context, true);
               },
             ),
           ],
         ),
       ),
     );
+    if (startTest == true) {
+      await runTest();
+    }
   }
 }
