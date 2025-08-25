@@ -79,7 +79,10 @@ class _MyHomePageState extends State<MyHomePage> {
           ).colorScheme.primary, //Color.fromARGB(255, 246, 246, 246),
           appBar: AppBar(
             backgroundColor: AppTheme.seedColor,
-            title: Text(widget.title, style: TextStyle(color: Colors.white)),
+            title: FittedBox(
+              fit: BoxFit.fitWidth,
+              child: Text(widget.title, style: TextStyle(color: Colors.white)),
+            ),
             bottom: PreferredSize(
               preferredSize: Size.fromHeight(2),
               child: Container(
