@@ -25,21 +25,28 @@ class AccelerometerTestButton extends BaseButton {
 
 class AccelerometerTestButtonState
     extends BaseButtonState<AccelerometerTestButton> {
-  late StreamSubscription<UserAccelerometerEvent> subscription;
+  late StreamSubscription<AccelerometerEvent> subscription;
   late Completer<TestResultCases> completer = Completer<TestResultCases>();
   bool isTestRunning = false;
   Future<TestResultCases> accelerometerTest() async {
     bool xPassed = false, yPassed = false, zPassed = false;
     completer = Completer<TestResultCases>();
-    int numberOfTests = 0;
+    bool firstAccelerometerIteration = false;
+    double x = 0, y = 0, z = 0;
     //segments of old timebased implementation
 
     //var testStartTime = DateTime.now();
     //var timePassed = Duration();
-    subscription = userAccelerometerEvents.listen(
-      (UserAccelerometerEvent event) {
+    subscription = accelerometerEvents.listen(
+      (AccelerometerEvent event) {
         //segments of old timebased implementation
-
+        if (firstAccelerometerIteration == false) {
+          firstAccelerometerIteration = true;
+          x = event.x;
+          y = event.y;
+          z = event.z;
+          print('first');
+        }
         //timePassed = testStartTime.difference(event.timestamp);
         //print(timePassed.inSeconds);
         //if (timePassed.inSeconds.abs() > 7) {
@@ -48,11 +55,15 @@ class AccelerometerTestButtonState
         // subscription.cancel();
         // completer.complete(TestResultCases.testFailed);
         // }
+        /*
         print('Start accelerometer test: $numberOfTests');
         numberOfTests++;
-        if (!xPassed && event.x.abs() >= 1.0) xPassed = true;
-        if (!yPassed && event.y.abs() >= 1.0) yPassed = true;
-        if (!zPassed && event.z.abs() >= 1.0) zPassed = true;
+        */
+        print(event);
+
+        if (!xPassed && (event.x - x).abs() >= 2.0) xPassed = true;
+        if (!yPassed && (event.y - y).abs() >= 2.0) yPassed = true;
+        if (!zPassed && (event.z - z).abs() >= 2.0) zPassed = true;
 
         if (xPassed && yPassed && zPassed) {
           print("Success");

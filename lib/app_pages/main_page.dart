@@ -5,7 +5,7 @@ import 'package:diagnosticare/test_buttons/speaker/speaker_button.dart';
 import 'package:diagnosticare/test_buttons/touchscreen/touchscreen_button.dart';
 import 'package:flutter/material.dart';
 import 'package:diagnosticare/test_buttons/accelerometer_button.dart';
-import 'package:diagnosticare/test_buttons/simple_button.dart';
+//import 'package:diagnosticare/test_buttons/simple_button.dart';
 import 'package:diagnosticare/app_theme/app_theme.dart';
 import 'package:diagnosticare/test_buttons/camera/camera_button.dart';
 
