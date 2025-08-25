@@ -114,7 +114,7 @@ class StartTestButtonsState extends State<StartTestButtons> {
 
           // Wait for any navigation/dialogs to complete
           // This approach waits for the modal route (dialog) to be dismissed
-          await _waitForTestCompletion();
+          //await _waitForTestCompletion();
 
           print('Test ${i + 1} completed: ${buttonState.widget.buttonName}');
         }
