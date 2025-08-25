@@ -8,10 +8,13 @@ import 'package:diagnosticare/app_pages/main_page.dart';
 import 'package:diagnosticare/test_buttons/start_all/reset_test_data_button.dart';
 import 'package:diagnosticare/test_buttons/start_all/start_tests_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'app_theme/app_theme.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(const MyApp());
 }
 
