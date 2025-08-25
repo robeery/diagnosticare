@@ -38,6 +38,7 @@ class _SimpleTestButtonState extends BaseButtonState<SimpleTestButton> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
+        scrollable: true,
         title: Text(widget.popUpName),
         content: Text(widget.popUpDescription),
         actions: [

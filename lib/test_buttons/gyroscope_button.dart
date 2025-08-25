@@ -91,6 +91,7 @@ class GyroscopeButtonState extends BaseButtonState<GyroscopeButton> {
       barrierDismissible: false,
       builder: (context) => StatefulBuilder(
         builder: (context, setState) => AlertDialog(
+          scrollable: true,
           title: Text(widget.popUpName),
           content: Column(
             mainAxisSize: MainAxisSize.min,

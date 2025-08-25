@@ -45,6 +45,7 @@ class TouchScreenTestButtonState
       barrierDismissible: false,
       builder: (context) => StatefulBuilder(
         builder: (context, setState) => AlertDialog(
+          scrollable: true,
           title: Text(widget.popUpName),
           content: Column(
             mainAxisSize: MainAxisSize.min,
