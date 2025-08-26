@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:diagnosticare/app_theme/app_theme.dart';
 import 'package:diagnosticare/test_buttons/base_button.dart';
 import 'package:diagnosticare/test_buttons/model/test_result_cases.dart';
@@ -57,19 +58,13 @@ class StartTestButtonsState extends State<StartTestButtons> {
 
     ///!!!!!!!!!
     ///I should filter by testData[]
-    final notDoneTestButtons = buttonKeys
-        .where(
-          (key) => key.currentState?.testResult == TestResultCases.testNotDone,
-        )
-        .toList();
+
     /*
     print(
       'XXXXXXXXX notDoneTestButtons == ${notDoneTestButtons.length} XXXXXXXXX',
     );
     */
-    for (int i = 0; i < notDoneTestButtons.length; i++) {
-      print(notDoneTestButtons[i].currentState!.widget.buttonName);
-    }
+
     try {
       // Run each test and wait for it to complete
       //print(buttonKeys.length);

@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:diagnosticare/test_buttons/model/test_result_cases.dart';
 import 'package:diagnosticare/test_buttons/multitouch/multitouch_test.dart';
+import 'package:diagnosticare/test_data_manager/test_data_manager.dart';
 
 import 'package:flutter/material.dart';
 import '../base_button.dart';
@@ -59,7 +62,13 @@ class MultiTouchTestButtonState extends BaseButtonState<MultiTouchTestButton> {
           actions: [
             TextButton(
               child: const Text('Cancel'),
-              onPressed: () {
+              onPressed: () async {
+                TestDataManager db = TestDataManager();
+                var dbEntries = await db.getAllTestData();
+                log("cate in db?: ${dbEntries.length}");
+
+                printDbData();
+                db.printAllTestData();
                 Navigator.pop(context, false);
               },
             ),

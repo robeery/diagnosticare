@@ -1,3 +1,5 @@
+import 'package:diagnosticare/test_data_manager/test_data_manager.dart';
+
 import 'base_button.dart';
 import 'package:flutter/material.dart';
 import 'package:sensors_plus/sensors_plus.dart';
@@ -106,6 +108,8 @@ class GyroscopeButtonState extends BaseButtonState<GyroscopeButton> {
             TextButton(
               child: const Text('Cancel'),
               onPressed: () {
+                var db = TestDataManager();
+                db.deleteAllTestData();
                 if (!isTestRunning) {
                   Navigator.pop(context);
                 } else {

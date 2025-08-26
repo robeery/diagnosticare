@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:diagnosticare/test_data_manager/test_data_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:diagnosticare/app_theme/app_theme.dart';
 import 'model/test_result_cases.dart';
@@ -33,6 +36,11 @@ abstract class BaseButtonState<T extends BaseButton> extends State<T> {
   //param is a possible needed variable for future tests, hence why it is an optional parameter
   runTest({TestResultCases? param});
   Future<void> onPressedFunction();
+  void printDbData() async {
+    TestDataManager db = TestDataManager();
+    var dbEntries = await db.getAllTestData();
+    log("${dbEntries.length}");
+  }
 
   //function that saves tests results
   Future<void> saveTestData(List<TestResultCases> testData) async {
@@ -72,6 +80,23 @@ abstract class BaseButtonState<T extends BaseButton> extends State<T> {
   void initState() {
     super.initState();
     _initializeTestData();
+    //loading each button as it is built/reloaded
+    //this might cause issues because firstly it may not work with a lazy implementation
+    //second of all we repopulate every time the buttons are loaded which is problematic even without a lazy builder
+    //every time we enter the 'home' page
+    /*
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final state = this;
+      final data = TestData(
+        id: state.widget.testId,
+        name: state.widget.buttonName,
+        testResult: 'testNotDone',
+        additionalData: '-',
+      );
+      log("base button init");
+      await TestDataManager().insertTestData(data);
+    });
+    */
   }
 
   Future<void> _initializeTestData() async {

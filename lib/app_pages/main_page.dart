@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:diagnosticare/test_buttons/base_button.dart';
 import 'package:diagnosticare/test_buttons/gyroscope_button.dart';
 import 'package:diagnosticare/test_buttons/multitouch/multitouch_button.dart';
 import 'package:diagnosticare/test_buttons/speaker/speaker_button.dart';
 import 'package:diagnosticare/test_buttons/touchscreen/touchscreen_button.dart';
+import 'package:diagnosticare/test_data_manager/test_data_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:diagnosticare/test_buttons/accelerometer_button.dart';
 //import 'package:diagnosticare/test_buttons/simple_button.dart';
@@ -79,6 +82,24 @@ class MainPageState extends State<MainPage> {
 
       MultiTouchTestButton(key: buttonStateKeys[8]),
     ];
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final manager = TestDataManager();
+
+      // Check if DB is empty first
+      final data = await manager.getAllTestData();
+      if (data.isEmpty) {
+        await manager.initializeWithButtonKeys(buttonStateKeys);
+
+        // Optional: fetch and print data again for testing
+        final newData = await manager.getAllTestData();
+        for (var item in newData) {
+          print("Fetched from DB: ${item.name} - ${item.testResult}");
+        }
+      } else {
+        print("✅ Database already contains data. Skipping initialization.");
+      }
+    });
   }
 
   List<GlobalKey<BaseButtonState>>? getButtonKeys() {
@@ -113,30 +134,46 @@ class MainPageState extends State<MainPage> {
                 trackBorderColor: Colors.amber,
                 trackVisibility: true,
 
-                //first, if we use a normal list (List<Widget>) that renders all the buttons at once there may be optimization issues
-                //second, if we use a lazy list builder (List<WidgetBuilder>) the test buttons on reconstruction aren't drawn with the last test icon
-                //also third: if we rebuild using lazy list builder or any other form or rebuild and scroll away while the test takes place, the app crashes
+                child: SingleChildScrollView(
+                  controller: scrollController,
+                  padding: const EdgeInsets.all(60),
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: MediaQuery.of(context).size.height,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: List.generate(testButtons.length * 2 - 1, (
+                        index,
+                      ) {
+                        if (index.isEven) {
+                          final buttonIndex = index ~/ 2;
+                          return RepaintBoundary(
+                            child: testButtons[buttonIndex],
+                          );
+                        } else {
+                          return const SizedBox(height: 30);
+                        }
+                      }),
+                    ),
+                  ),
+                ),
 
                 //built lazy:
+                /*
                 child: ListView.separated(
                   controller: scrollController,
                   physics: const AlwaysScrollableScrollPhysics(),
                   padding: const EdgeInsets.all(60),
                   itemCount: testButtons.length,
                   itemBuilder: (context, index) {
-                    /*
-                return RepaintBoundary(
-                  child: KeyedSubtree(
-                    key: Key(index.toString()),
-                    child: testButtonsBuilders[index],
-                  ),
-                );
-                */
                     return RepaintBoundary(child: testButtons[index]);
                   },
                   separatorBuilder: (context, index) =>
                       const SizedBox(height: 30),
                 ),
+                */
               ),
             ],
           ),
