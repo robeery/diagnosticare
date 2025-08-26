@@ -138,23 +138,6 @@ class MainPageState extends State<MainPage> {
                       const SizedBox(height: 30),
                 ),
               ),
-              ValueListenableBuilder<bool>(
-                valueListenable: isBusyNotifier,
-                builder: (context, isBusy, _) {
-                  return isBusy
-                      ? Align(
-                          alignment: Alignment.bottomRight,
-                          child: Padding(
-                            padding: const EdgeInsets.all(11),
-                            child: CircularProgressIndicator(
-                              color: AppTheme.appBarBottomBorderColor,
-                            ),
-                          ),
-                        )
-                      : const SizedBox.shrink();
-                },
-              ),
-              //StartTestButtons(),
             ],
           ),
         );
