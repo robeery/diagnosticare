@@ -12,7 +12,7 @@ class CameraTestButton extends BaseButton {
   final int cameraNumber;
   const CameraTestButton({
     Key? key,
-    required ValueNotifier<bool> isBusyNotifier,
+
     required String buttonName,
     required int testId,
     required this.cameraNumber,
@@ -23,7 +23,6 @@ class CameraTestButton extends BaseButton {
          popUpName: '$buttonName Test',
          popUpDescription:
              'After pressing the start button, various permisions may be asked. After accepting them, you will need to take a picture and determine is the selected camera is functional or not in order to conclude the test.',
-         isBusyNotifier: isBusyNotifier,
        );
 
   @override

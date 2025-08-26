@@ -9,7 +9,6 @@ abstract class BaseButton extends StatefulWidget {
   final String buttonName;
   final String popUpName;
   final String popUpDescription;
-  final ValueNotifier<bool> isBusyNotifier;
 
   const BaseButton({
     Key? key,
@@ -17,7 +16,6 @@ abstract class BaseButton extends StatefulWidget {
     required this.buttonName,
     required this.popUpName,
     required this.popUpDescription,
-    required this.isBusyNotifier,
   }) : super(key: key);
 }
 
@@ -31,8 +29,6 @@ abstract class BaseButtonState<T extends BaseButton> extends State<T> {
       TestResultCases.testNotDone => Icons.check_box_outline_blank,
     };
   }
-
-  final ValueNotifier<bool> isBusyNotifier = ValueNotifier(false);
 
   //param is a possible needed variable for future tests, hence why it is an optional parameter
   runTest({TestResultCases? param});
@@ -85,22 +81,15 @@ abstract class BaseButtonState<T extends BaseButton> extends State<T> {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<bool>(
-      valueListenable: widget.isBusyNotifier,
-      builder: (context, isBusy, _) {
-        return TextButton.icon(
-          style: AppTheme().buttonStyle,
-          onPressed: isBusy
-              ? null // disables the button
-              : () => onPressedFunction(),
-          icon: Icon(
-            getIcon(testData[widget.testId]),
-            color: const Color.fromARGB(255, 242, 112, 39),
-          ),
-          iconAlignment: IconAlignment.end,
-          label: Text(widget.buttonName),
-        );
-      },
+    return TextButton.icon(
+      style: AppTheme().buttonStyle,
+      onPressed: () => onPressedFunction(),
+      icon: Icon(
+        getIcon(testData[widget.testId]),
+        color: const Color.fromARGB(255, 242, 112, 39),
+      ),
+      iconAlignment: IconAlignment.end,
+      label: Text(widget.buttonName),
     );
   }
 }

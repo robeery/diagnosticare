@@ -40,54 +40,44 @@ class MainPageState extends State<MainPage> {
 
     testButtons = [
       // Individual test buttons only
-      AccelerometerTestButton(
-        key: buttonStateKeys[0],
-        isBusyNotifier: isBusyNotifier,
-      ),
-      GyroscopeButton(key: buttonStateKeys[1], isBusyNotifier: isBusyNotifier),
+      AccelerometerTestButton(key: buttonStateKeys[0]),
+      GyroscopeButton(key: buttonStateKeys[1]),
 
       // SimpleTestButton(key: buttonStateKeys[2], isBusyNotifier: isBusyNotifier),
       CameraTestButton(
         key: buttonStateKeys[2],
-        isBusyNotifier: isBusyNotifier,
         buttonName: 'Back Camera',
         testId: 3,
         cameraNumber: 0,
       ),
       CameraTestButton(
         key: buttonStateKeys[3],
-        isBusyNotifier: isBusyNotifier,
+
         buttonName: 'Front Camera',
         testId: 4,
         cameraNumber: 1,
       ),
       SpeakerTestButton(
         key: buttonStateKeys[4],
-        isBusyNotifier: isBusyNotifier,
+
         buttonName: 'Speaker',
         testId: 5,
       ),
       SpeakerTestButton(
         key: buttonStateKeys[5],
-        isBusyNotifier: isBusyNotifier,
+
         buttonName: 'Earpiece',
         testId: 6,
       ),
       SpeakerTestButton(
         key: buttonStateKeys[6],
-        isBusyNotifier: isBusyNotifier,
+
         buttonName: 'Stereo Sound',
         testId: 7,
       ),
-      TouchScreenTestButton(
-        key: buttonStateKeys[7],
-        isBusyNotifier: isBusyNotifier,
-      ),
+      TouchScreenTestButton(key: buttonStateKeys[7]),
 
-      MultiTouchTestButton(
-        key: buttonStateKeys[8],
-        isBusyNotifier: isBusyNotifier,
-      ),
+      MultiTouchTestButton(key: buttonStateKeys[8]),
     ];
   }
 

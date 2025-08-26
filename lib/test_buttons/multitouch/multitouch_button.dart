@@ -5,18 +5,15 @@ import 'package:flutter/material.dart';
 import '../base_button.dart';
 
 class MultiTouchTestButton extends BaseButton {
-  const MultiTouchTestButton({
-    Key? key,
-    required ValueNotifier<bool> isBusyNotifier,
-  }) : super(
-         key: key,
-         testId: 9,
-         buttonName: 'Multitouch',
-         popUpName: 'Multitouch Test',
-         popUpDescription:
-             'After pressing the start button, you will be taken to two pages split in half. In order to successfully test the multitouch feature, touch with your fingers simultaneously both sides of the screen. If any given side cannot be pressed, the test will fail after 15 seconds of inactivity.',
-         isBusyNotifier: isBusyNotifier,
-       );
+  const MultiTouchTestButton({Key? key})
+    : super(
+        key: key,
+        testId: 9,
+        buttonName: 'Multitouch',
+        popUpName: 'Multitouch Test',
+        popUpDescription:
+            'After pressing the start button, you will be taken to two pages split in half. In order to successfully test the multitouch feature, touch with your fingers simultaneously both sides of the screen. If any given side cannot be pressed, the test will fail after 15 seconds of inactivity.',
+      );
 
   @override
   State<MultiTouchTestButton> createState() => MultiTouchTestButtonState();

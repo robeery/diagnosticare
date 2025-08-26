@@ -5,18 +5,15 @@ import 'dart:async';
 import 'model/test_result_cases.dart';
 
 class AccelerometerTestButton extends BaseButton {
-  const AccelerometerTestButton({
-    Key? key,
-    required ValueNotifier<bool> isBusyNotifier,
-  }) : super(
-         key: key,
-         testId: 1,
-         buttonName: 'Accelerometer',
-         popUpName: 'Accelerometer Test',
-         popUpDescription:
-             'After pressing the start button, please shake your phone in order to test the accelerometer.',
-         isBusyNotifier: isBusyNotifier,
-       );
+  const AccelerometerTestButton({Key? key})
+    : super(
+        key: key,
+        testId: 1,
+        buttonName: 'Accelerometer',
+        popUpName: 'Accelerometer Test',
+        popUpDescription:
+            'After pressing the start button, please shake your phone in order to test the accelerometer.',
+      );
 
   @override
   State<AccelerometerTestButton> createState() =>
@@ -102,8 +99,6 @@ class AccelerometerTestButtonState
 
   @override
   Future<void> onPressedFunction() async {
-    widget.isBusyNotifier.value = true;
-
     await showDialog(
       context: context,
       barrierDismissible: false,
@@ -128,7 +123,6 @@ class AccelerometerTestButtonState
               child: const Text('Cancel'),
               onPressed: () {
                 if (!isTestRunning) {
-                  widget.isBusyNotifier.value = false;
                   Navigator.pop(context);
                 } else {
                   subscription.cancel();
@@ -143,7 +137,7 @@ class AccelerometerTestButtonState
                       isTestRunning = false;
                     });
                   }
-                  widget.isBusyNotifier.value = false;
+
                   testData[widget.testId] = TestResultCases.testNotDone;
                   saveTestData(testData);
                 }
@@ -170,7 +164,6 @@ class AccelerometerTestButtonState
                     setState(() {
                       isTestRunning = false;
                     });
-                    widget.isBusyNotifier.value = false;
                   }
                 } else {
                   print('Fail button press');
@@ -189,7 +182,6 @@ class AccelerometerTestButtonState
                     });
                   }
                   isTestRunning = false;
-                  widget.isBusyNotifier.value = false;
                 }
               },
             ),

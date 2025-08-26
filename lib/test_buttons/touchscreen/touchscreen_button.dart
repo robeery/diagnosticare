@@ -4,18 +4,15 @@ import 'package:flutter/material.dart';
 import '../base_button.dart';
 
 class TouchScreenTestButton extends BaseButton {
-  const TouchScreenTestButton({
-    Key? key,
-    required ValueNotifier<bool> isBusyNotifier,
-  }) : super(
-         key: key,
-         testId: 8,
-         buttonName: 'Touchscreen',
-         popUpName: 'Touchscreen Test',
-         popUpDescription:
-             'After pressing the start button, you will be taken to a new page filled with squares. In order to successfully test the touchscreen, touch or drag with your fingers across all squares. If any given square cannot be pressed, the test will fail after 15 seconds of inactivity.',
-         isBusyNotifier: isBusyNotifier,
-       );
+  const TouchScreenTestButton({Key? key})
+    : super(
+        key: key,
+        testId: 8,
+        buttonName: 'Touchscreen',
+        popUpName: 'Touchscreen Test',
+        popUpDescription:
+            'After pressing the start button, you will be taken to a new page filled with squares. In order to successfully test the touchscreen, touch or drag with your fingers across all squares. If any given square cannot be pressed, the test will fail after 15 seconds of inactivity.',
+      );
 
   @override
   State<TouchScreenTestButton> createState() => TouchScreenTestButtonState();

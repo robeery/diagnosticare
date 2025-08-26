@@ -3,17 +3,14 @@ import 'base_button.dart';
 import 'model/test_result_cases.dart';
 
 class SimpleTestButton extends BaseButton {
-  const SimpleTestButton({
-    Key? key,
-    required ValueNotifier<bool> isBusyNotifier,
-  }) : super(
-         key: key,
-         testId: 0,
-         buttonName: 'Buton simplu',
-         popUpName: 'Buton simplu',
-         popUpDescription: 'Doar un buton...',
-         isBusyNotifier: isBusyNotifier,
-       );
+  const SimpleTestButton({Key? key})
+    : super(
+        key: key,
+        testId: 0,
+        buttonName: 'Buton simplu',
+        popUpName: 'Buton simplu',
+        popUpDescription: 'Doar un buton...',
+      );
 
   @override
   State<SimpleTestButton> createState() => _SimpleTestButtonState();
@@ -33,8 +30,6 @@ class _SimpleTestButtonState extends BaseButtonState<SimpleTestButton> {
 
   @override
   Future<void> onPressedFunction() async {
-    widget.isBusyNotifier.value = true;
-
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -56,7 +51,5 @@ class _SimpleTestButtonState extends BaseButtonState<SimpleTestButton> {
     saveTestData(testData);
 
     setState(() {});
-
-    widget.isBusyNotifier.value = false;
   }
 }

@@ -6,7 +6,7 @@ import '../base_button.dart';
 class SpeakerTestButton extends BaseButton {
   const SpeakerTestButton({
     Key? key,
-    required ValueNotifier<bool> isBusyNotifier,
+
     required String buttonName,
     required int testId,
   }) : super(
@@ -15,7 +15,6 @@ class SpeakerTestButton extends BaseButton {
          buttonName: buttonName,
          popUpName: '$buttonName Test',
          popUpDescription: 'Temporary',
-         isBusyNotifier: isBusyNotifier,
        );
 
   @override

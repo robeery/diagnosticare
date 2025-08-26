@@ -5,7 +5,7 @@ import 'dart:async';
 import 'model/test_result_cases.dart';
 
 class GyroscopeButton extends BaseButton {
-  const GyroscopeButton({Key? key, required ValueNotifier<bool> isBusyNotifier})
+  const GyroscopeButton({Key? key})
     : super(
         key: key,
         testId: 2,
@@ -13,7 +13,6 @@ class GyroscopeButton extends BaseButton {
         popUpName: 'Gyroscope Test',
         popUpDescription:
             'After pressing the start button, please twist your wrist in a circular motion with your phone in your hand in order to test the gyroscope.',
-        isBusyNotifier: isBusyNotifier,
       );
 
   @override
@@ -84,8 +83,6 @@ class GyroscopeButtonState extends BaseButtonState<GyroscopeButton> {
 
   @override
   Future<void> onPressedFunction() async {
-    widget.isBusyNotifier.value = true;
-
     await showDialog(
       context: context,
       barrierDismissible: false,
@@ -110,7 +107,6 @@ class GyroscopeButtonState extends BaseButtonState<GyroscopeButton> {
               child: const Text('Cancel'),
               onPressed: () {
                 if (!isTestRunning) {
-                  widget.isBusyNotifier.value = false;
                   Navigator.pop(context);
                 } else {
                   subscription.cancel();
@@ -126,7 +122,7 @@ class GyroscopeButtonState extends BaseButtonState<GyroscopeButton> {
                     });
                   }
                   */
-                  widget.isBusyNotifier.value = false;
+
                   testData[widget.testId] = TestResultCases.testNotDone;
                   saveTestData(testData);
                   isTestRunning = false;
@@ -152,7 +148,7 @@ class GyroscopeButtonState extends BaseButtonState<GyroscopeButton> {
                   if (context.mounted) {
                     Navigator.pop(context);
                     setState(() {});
-                    widget.isBusyNotifier.value = false;
+
                     isTestRunning = false;
                   }
                 } else {
@@ -165,8 +161,6 @@ class GyroscopeButtonState extends BaseButtonState<GyroscopeButton> {
                   }
                   testData[widget.testId] = TestResultCases.testFailed;
                   await saveTestData(testData);
-
-                  widget.isBusyNotifier.value = false;
                 }
               },
             ),
