@@ -1,5 +1,6 @@
 import 'package:diagnosticare/app_theme/app_theme.dart';
 import 'package:diagnosticare/test_buttons/model/test_result_cases.dart';
+import 'package:diagnosticare/test_data_manager/test_data_manager.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -76,6 +77,7 @@ class StereoTestPageState extends State<StereoTestPage> {
     await prefs.setStringList('testData', stringList);
   }
 
+  var db = TestDataManager();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -211,6 +213,10 @@ class StereoTestPageState extends State<StereoTestPage> {
                     ? () {
                         testData[widget.widgetId] = TestResultCases.testFailed;
                         saveTestData(testData);
+                        db.updateTestResultById(
+                          widget.widgetId,
+                          testData[widget.widgetId].toString(),
+                        );
                         player.stop();
                         Navigator.pop(context);
                       }
@@ -227,6 +233,10 @@ class StereoTestPageState extends State<StereoTestPage> {
                         testData[widget.widgetId] =
                             TestResultCases.testSucceded;
                         saveTestData(testData);
+                        db.updateTestResultById(
+                          widget.widgetId,
+                          testData[widget.widgetId].toString(),
+                        );
                         player.stop();
                         Navigator.pop(context);
                       }

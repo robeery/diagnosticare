@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:diagnosticare/test_buttons/base_button.dart';
+import 'package:diagnosticare/test_buttons/model/test_result_cases.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -41,6 +44,8 @@ class TestDataManager {
   factory TestDataManager() => _instance;
   TestDataManager._internal();
 
+  late List<TestData> testDataList;
+
   static Database? _database;
 
   Future<Database> get database async {
@@ -73,6 +78,15 @@ class TestDataManager {
     List<GlobalKey<BaseButtonState>> keys,
   ) async {
     final db = await database;
+    testDataList = List.filled(
+      keys.length + 1,
+      TestData(
+        id: 0,
+        name: "name_default",
+        testResult: "test_result_default",
+        additionalData: "additional_data_default",
+      ),
+    );
 
     // Check if data is already inserted (optional)
     final count = Sqflite.firstIntValue(
@@ -80,6 +94,7 @@ class TestDataManager {
     );
     if (count != null && count > 0) return;
 
+    int i = 1;
     // Populate the table
     for (var key in keys) {
       final state = key.currentState;
@@ -90,9 +105,49 @@ class TestDataManager {
           testResult: 'testNotDone', // Replace as needed
           additionalData: '-',
         );
-
+        testDataList[i++] = testData;
         await insertTestData(testData);
       }
+    }
+  }
+
+  Future<void> initializeTestDataList(
+    List<GlobalKey<BaseButtonState>> keys,
+  ) async {
+    final db = await database;
+
+    // Check if the table is empty
+    final count = Sqflite.firstIntValue(
+      await db.rawQuery('SELECT COUNT(*) FROM TestData'),
+    );
+
+    if (count == null || count == 0) {
+      // If empty, initialize with default values
+      testDataList = List.filled(
+        keys.length + 1,
+        TestData(
+          id: 0,
+          name: "name_default",
+          testResult: "test_result_default",
+          additionalData: "additional_data_default",
+        ),
+      );
+      print("⚠️ DB is empty. testDataList filled with default entries.");
+      return;
+    }
+
+    // Otherwise, load data from DB
+    final List<Map<String, dynamic>> maps = await db.query('TestData');
+    testDataList = maps.map((map) => TestData.fromMap(map)).toList();
+    print('✅ testDataList initialized with ${testDataList.length} entries.');
+  }
+
+  void printTestDataList() {
+    log("TestDataList: ");
+    for (int i = 0; i < testDataList.length; i++) {
+      print(
+        "Id: ${testDataList[i].id}; Name: ${testDataList[i].name}; TestResult: ${testDataList[i].testResult}; AdditionalData: ${testDataList[i].additionalData};",
+      );
     }
   }
 
@@ -116,7 +171,7 @@ class TestDataManager {
   Future<void> printAllTestData() async {
     final db = await database;
     final List<Map<String, dynamic>> result = await db.query('TestData');
-
+    log("Database entries:");
     if (result.isEmpty) {
       print(' No test data found in the database.');
       return;
@@ -129,6 +184,24 @@ class TestDataManager {
         ' ID: ${data.id}, Name: ${data.name}, Result: ${data.testResult}, Additional: ${data.additionalData}',
       );
     }
+  }
+
+  Future<void> updateTestResultById(int id, String newResult) async {
+    final db = await database;
+    final rowsUpdated = await db.update(
+      'TestData',
+      {'testResult': newResult},
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+
+    if (rowsUpdated == 0) {
+      print('⚠️ No TestData found with id: $id');
+    } else {
+      print('✅ Updated testResult for id: $id to "$newResult"');
+    }
+
+    testDataList[id].testResult = newResult;
   }
 
   Future<void> deleteAllTestData() async {

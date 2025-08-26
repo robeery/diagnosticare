@@ -88,6 +88,10 @@ class MainPageState extends State<MainPage> {
 
       // Check if DB is empty first
       final data = await manager.getAllTestData();
+
+      //load TestDataList
+      await TestDataManager().initializeTestDataList(buttonStateKeys);
+
       if (data.isEmpty) {
         await manager.initializeWithButtonKeys(buttonStateKeys);
 

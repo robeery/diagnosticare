@@ -1,3 +1,5 @@
+import 'package:diagnosticare/test_data_manager/test_data_manager.dart';
+
 import 'base_button.dart';
 import 'package:flutter/material.dart';
 import 'package:sensors_plus/sensors_plus.dart';
@@ -140,6 +142,11 @@ class AccelerometerTestButtonState
 
                   testData[widget.testId] = TestResultCases.testNotDone;
                   saveTestData(testData);
+                  var db = TestDataManager();
+                  db.updateTestResultById(
+                    widget.testId,
+                    testData[widget.testId].toString(),
+                  );
                 }
               },
             ),
@@ -158,6 +165,11 @@ class AccelerometerTestButtonState
                   testResult = await runTest(param: testResult);
                   testData[widget.testId] = testResult;
                   await saveTestData(testData);
+                  var db = TestDataManager();
+                  db.updateTestResultById(
+                    widget.testId,
+                    testData[widget.testId].toString(),
+                  );
 
                   if (context.mounted) {
                     Navigator.pop(context);
@@ -175,6 +187,11 @@ class AccelerometerTestButtonState
                   }
                   testData[widget.testId] = TestResultCases.testFailed;
                   await saveTestData(testData);
+                  var db = TestDataManager();
+                  db.updateTestResultById(
+                    widget.testId,
+                    testData[widget.testId].toString(),
+                  );
 
                   if (context.mounted) {
                     setState(() {

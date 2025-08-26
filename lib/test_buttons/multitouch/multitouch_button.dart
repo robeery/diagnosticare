@@ -64,11 +64,10 @@ class MultiTouchTestButtonState extends BaseButtonState<MultiTouchTestButton> {
               child: const Text('Cancel'),
               onPressed: () async {
                 TestDataManager db = TestDataManager();
-                var dbEntries = await db.getAllTestData();
-                log("cate in db?: ${dbEntries.length}");
 
-                printDbData();
                 db.printAllTestData();
+                db.printTestDataList();
+
                 Navigator.pop(context, false);
               },
             ),
