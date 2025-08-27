@@ -96,11 +96,13 @@ class AccelerometerTestButtonState
     //print("@runTest -> accelemeter_button $testResult");
     //print("Accelerometru testId -> ${widget.testId}");
     //print(testData);
+    setState(() {});
     return testResult;
   }
 
   @override
   Future<void> onPressedFunction() async {
+    var db = TestDataManager();
     await showDialog(
       context: context,
       barrierDismissible: false,
@@ -142,7 +144,7 @@ class AccelerometerTestButtonState
 
                   testData[widget.testId] = TestResultCases.testNotDone;
                   saveTestData(testData);
-                  var db = TestDataManager();
+
                   db.updateTestResultById(
                     widget.testId,
                     testData[widget.testId].toString(),
@@ -165,7 +167,7 @@ class AccelerometerTestButtonState
                   testResult = await runTest(param: testResult);
                   testData[widget.testId] = testResult;
                   await saveTestData(testData);
-                  var db = TestDataManager();
+
                   db.updateTestResultById(
                     widget.testId,
                     testData[widget.testId].toString(),
@@ -187,7 +189,7 @@ class AccelerometerTestButtonState
                   }
                   testData[widget.testId] = TestResultCases.testFailed;
                   await saveTestData(testData);
-                  var db = TestDataManager();
+
                   db.updateTestResultById(
                     widget.testId,
                     testData[widget.testId].toString(),

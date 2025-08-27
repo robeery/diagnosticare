@@ -5,6 +5,7 @@ import 'package:diagnosticare/test_buttons/model/test_result_cases.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:diagnosticare/test_data_manager/test_data_manager.dart';
 
 // A widget that displays the picture taken by the user.
 class DisplayPictureScreen extends StatelessWidget {
@@ -60,6 +61,11 @@ class DisplayPictureScreen extends StatelessWidget {
                     // Save 'test failed' result and go back
                     testData[widgetId] = TestResultCases.testFailed;
                     saveTestData(testData);
+                    var db = TestDataManager();
+                    db.updateTestResultById(
+                      widgetId,
+                      testData[widgetId].toString(),
+                    );
                     Navigator.pop(context); // Close DisplayPictureScreen
                     Navigator.pop(context); // Close TakePictureScreen
                   },
@@ -74,6 +80,11 @@ class DisplayPictureScreen extends StatelessWidget {
                     // Save 'test succeeded' result and go back
                     testData[widgetId] = TestResultCases.testSucceded;
                     saveTestData(testData);
+                    var db = TestDataManager();
+                    db.updateTestResultById(
+                      widgetId,
+                      testData[widgetId].toString(),
+                    );
                     Navigator.pop(context); // Close DisplayPictureScreen
                     Navigator.pop(context); // Close TakePictureScreen
                   },

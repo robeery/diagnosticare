@@ -22,8 +22,8 @@ class MainPage extends StatefulWidget {
 }
 
 class MainPageState extends State<MainPage> {
-  final ValueNotifier<bool> isBusyNotifier = ValueNotifier(false);
   late final ScrollController scrollController = ScrollController();
+  final ValueNotifier<bool> isBusyNotifier = ValueNotifier(false);
   ScrollController? getScrollController() {
     try {
       return scrollController.hasClients ? scrollController : null;
@@ -35,6 +35,7 @@ class MainPageState extends State<MainPage> {
 
   late final List<Widget> testButtons;
   late final List<GlobalKey<BaseButtonState>> buttonStateKeys;
+  static bool hasFirstReinstancePassed = false;
 
   @override
   void initState() {
@@ -90,8 +91,10 @@ class MainPageState extends State<MainPage> {
       final data = await manager.getAllTestData();
 
       //load TestDataList
-      await TestDataManager().initializeTestDataList(buttonStateKeys);
-
+      if (hasFirstReinstancePassed == false) {
+        await TestDataManager().initializeTestDataList(buttonStateKeys);
+        hasFirstReinstancePassed = true;
+      }
       if (data.isEmpty) {
         await manager.initializeWithButtonKeys(buttonStateKeys);
 

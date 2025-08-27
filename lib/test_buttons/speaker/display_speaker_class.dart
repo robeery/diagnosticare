@@ -213,6 +213,7 @@ class StereoTestPageState extends State<StereoTestPage> {
                     ? () {
                         testData[widget.widgetId] = TestResultCases.testFailed;
                         saveTestData(testData);
+
                         db.updateTestResultById(
                           widget.widgetId,
                           testData[widget.widgetId].toString(),

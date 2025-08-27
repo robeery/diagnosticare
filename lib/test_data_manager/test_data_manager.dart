@@ -102,7 +102,7 @@ class TestDataManager {
         final testData = TestData(
           id: state.widget.testId, // or generate your own ID
           name: state.widget.buttonName,
-          testResult: 'testNotDone', // Replace as needed
+          testResult: 'TestResultCases.testNotDone', // Replace as needed
           additionalData: '-',
         );
         testDataList[i++] = testData;
@@ -138,7 +138,17 @@ class TestDataManager {
 
     // Otherwise, load data from DB
     final List<Map<String, dynamic>> maps = await db.query('TestData');
+
     testDataList = maps.map((map) => TestData.fromMap(map)).toList();
+    testDataList.insert(
+      0,
+      TestData(
+        id: 0,
+        name: 'Placeholder',
+        testResult: 'D',
+        additionalData: '-',
+      ), // Customize this default as needed
+    );
     print('✅ testDataList initialized with ${testDataList.length} entries.');
   }
 
@@ -202,11 +212,16 @@ class TestDataManager {
     }
 
     testDataList[id].testResult = newResult;
+    log(testDataList[id].testResult);
   }
 
   Future<void> deleteAllTestData() async {
     final db = await database;
     await db.delete('TestData');
+    for (int i = 1; i < testDataList.length; i++) {
+      testDataList[i].additionalData = '-';
+      testDataList[i].testResult = 'TestResultCases.testNotDone';
+    }
     print('🗑️ All TestData entries deleted.');
   }
 }

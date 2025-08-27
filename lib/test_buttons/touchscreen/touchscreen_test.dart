@@ -112,6 +112,7 @@ class _ButtonGridScreenState extends State<ButtonGridScreen> {
         print("Touchscreen Test succeded");
       }
       saveTestData(testData);
+
       db.updateTestResultById(
         widget.widgetId,
         testData[widget.widgetId].toString(),

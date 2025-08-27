@@ -80,11 +80,13 @@ class GyroscopeButtonState extends BaseButtonState<GyroscopeButton> {
 
     //print("@runTest -> gyroscope_button $testResult");
     //print("Gyroscope testId -> ${widget.testId}");
+    setState(() {});
     return testResult;
   }
 
   @override
   Future<void> onPressedFunction() async {
+    var db = TestDataManager();
     await showDialog(
       context: context,
       barrierDismissible: false,
@@ -108,7 +110,6 @@ class GyroscopeButtonState extends BaseButtonState<GyroscopeButton> {
             TextButton(
               child: const Text('Cancel'),
               onPressed: () {
-                var db = TestDataManager();
                 db.deleteAllTestData();
                 if (!isTestRunning) {
                   Navigator.pop(context);
@@ -129,6 +130,11 @@ class GyroscopeButtonState extends BaseButtonState<GyroscopeButton> {
 
                   testData[widget.testId] = TestResultCases.testNotDone;
                   saveTestData(testData);
+                  db.updateTestResultById(
+                    widget.testId,
+                    testData[widget.testId].toString(),
+                  );
+
                   isTestRunning = false;
                 }
               },
@@ -148,6 +154,10 @@ class GyroscopeButtonState extends BaseButtonState<GyroscopeButton> {
                   testResult = await runTest(param: testResult);
                   testData[widget.testId] = testResult;
                   await saveTestData(testData);
+                  db.updateTestResultById(
+                    widget.testId,
+                    testData[widget.testId].toString(),
+                  );
 
                   if (context.mounted) {
                     Navigator.pop(context);
@@ -165,6 +175,10 @@ class GyroscopeButtonState extends BaseButtonState<GyroscopeButton> {
                   }
                   testData[widget.testId] = TestResultCases.testFailed;
                   await saveTestData(testData);
+                  db.updateTestResultById(
+                    widget.testId,
+                    testData[widget.testId].toString(),
+                  );
                 }
               },
             ),

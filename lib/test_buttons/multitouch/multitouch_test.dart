@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:diagnosticare/app_theme/app_theme.dart';
 import 'package:diagnosticare/test_buttons/model/test_result_cases.dart';
+import 'package:diagnosticare/test_data_manager/test_data_manager.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -139,6 +140,11 @@ class _MultiTouchTestScreenState extends State<MultiTouchTestScreen> {
       testData[widget.widgetId] = TestResultCases.testFailed;
     }
     saveTestData(testData);
+    var db = TestDataManager();
+    db.updateTestResultById(
+      widget.widgetId,
+      testData[widget.widgetId].toString(),
+    );
     _inactivityTimer?.cancel();
 
     if (Navigator.of(context).canPop()) {
