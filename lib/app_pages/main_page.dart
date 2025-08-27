@@ -86,15 +86,14 @@ class MainPageState extends State<MainPage> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final manager = TestDataManager();
-
+      //load TestDataList
+      if (hasFirstReinstancePassed == false) {
+        TestDataManager().initializeTestDataList(buttonStateKeys);
+        hasFirstReinstancePassed = true;
+      }
       // Check if DB is empty first
       final data = await manager.getAllTestData();
 
-      //load TestDataList
-      if (hasFirstReinstancePassed == false) {
-        await TestDataManager().initializeTestDataList(buttonStateKeys);
-        hasFirstReinstancePassed = true;
-      }
       if (data.isEmpty) {
         await manager.initializeWithButtonKeys(buttonStateKeys);
 

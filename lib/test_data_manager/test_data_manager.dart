@@ -114,6 +114,15 @@ class TestDataManager {
   Future<void> initializeTestDataList(
     List<GlobalKey<BaseButtonState>> keys,
   ) async {
+    testDataList = List.filled(
+      keys.length + 1,
+      TestData(
+        id: 0,
+        name: "name_default",
+        testResult: "TestResultCases.testNotDone",
+        additionalData: "additional_data_default",
+      ),
+    );
     final db = await database;
 
     // Check if the table is empty
@@ -128,7 +137,7 @@ class TestDataManager {
         TestData(
           id: 0,
           name: "name_default",
-          testResult: "test_result_default",
+          testResult: "TestResultCases.testNotDone",
           additionalData: "additional_data_default",
         ),
       );
@@ -216,12 +225,13 @@ class TestDataManager {
   }
 
   Future<void> deleteAllTestData() async {
-    final db = await database;
-    await db.delete('TestData');
     for (int i = 1; i < testDataList.length; i++) {
       testDataList[i].additionalData = '-';
       testDataList[i].testResult = 'TestResultCases.testNotDone';
     }
+    final db = await database;
+    await db.delete('TestData');
+
     print('🗑️ All TestData entries deleted.');
   }
 }
