@@ -65,19 +65,6 @@ class TestDataCard extends StatefulWidget {
   final String title;
   final TestResultCases type;
 
-  static final List<String> testNames = [
-    'Simple',
-    'Accelerometer',
-    'Gyroscope',
-    'Back Camera',
-    'Front Camera',
-    'Speaker',
-    'Earpiece',
-    'Stereo Sound',
-    'Touchscreen',
-    'Multitouch',
-  ];
-
   const TestDataCard({Key? key, required this.title, required this.type})
     : super(key: key);
   @override
@@ -89,12 +76,15 @@ class _TestDataCardState extends State<TestDataCard> {
 
   @override
   Widget build(BuildContext context) {
-    //the i starts from one because 0 is reserved for "simple button"
     var db = TestDataManager();
+    final testNames = [
+      for (int i = 0; i < db.testDataList.length; i++) db.testDataList[i].name,
+    ];
+
     final filteredTestResults = [
-      for (int i = 1; i < testData.length; i++)
+      for (int i = 0; i < db.testDataList.length; i++)
         if (db.testDataList[i].testResult == widget.type.toString())
-          TestDataCard.testNames[i],
+          testNames[i],
     ];
 
     switch (widget.type) {

@@ -20,7 +20,7 @@ class ResetTestDataButton extends StatelessWidget {
       testData[i] = TestResultCases.testNotDone;
     }
     var db = TestDataManager();
-    db.deleteAllTestData();
+    await db.deleteAllTestData();
 
     await saveTestData(testData);
 

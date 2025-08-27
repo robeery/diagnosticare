@@ -45,7 +45,7 @@ class TestDataManager {
   TestDataManager._internal();
 
   List<TestData> testDataList = List.filled(
-    10,
+    11,
     TestData(
       id: 0,
       name: "name_default",
@@ -128,7 +128,7 @@ class TestDataManager {
       TestData(
         id: 0,
         name: 'Placeholder',
-        testResult: 'D',
+        testResult: 'TestResultCases.testNotDone',
         additionalData: '-',
       ), // Customize this default as needed
     );

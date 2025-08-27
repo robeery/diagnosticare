@@ -98,7 +98,7 @@ abstract class BaseButtonState<T extends BaseButton> extends State<T> {
   Future<void> _initializeTestData() async {
     var db = TestDataManager();
     await db.loadTestDataListFromDB();
-    log(db.testDataList[1].testResult);
+    // log(db.testDataList[1].testResult);
     testData = await loadTestData();
 
     setState(() {}); // To rebuild the widget with updated data
@@ -112,12 +112,23 @@ abstract class BaseButtonState<T extends BaseButton> extends State<T> {
       onPressed: () => onPressedFunction(),
       icon: Icon(
         // getIcon(testData[widget.testId]),
+        /*
         getIcon(
           EnumToString.fromString(
                 TestResultCases.values,
                 db.testDataList[widget.testId].testResult.split('.').last,
               ) ??
               TestResultCases.testNotDone,
+        ),
+        */
+        getIcon(
+          (widget.testId >= 0 && widget.testId < db.testDataList.length)
+              ? EnumToString.fromString(
+                      TestResultCases.values,
+                      db.testDataList[widget.testId].testResult.split('.').last,
+                    ) ??
+                    TestResultCases.testNotDone
+              : TestResultCases.testNotDone,
         ),
 
         color: const Color.fromARGB(255, 242, 112, 39),
