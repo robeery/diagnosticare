@@ -197,6 +197,9 @@ class TestDataManager {
   }
 
   Future<void> updateTestResultById(int id, String newResult) async {
+    testDataList[id].testResult = newResult;
+    log(testDataList[id].testResult);
+
     final db = await database;
     final rowsUpdated = await db.update(
       'TestData',
@@ -210,9 +213,6 @@ class TestDataManager {
     } else {
       print('✅ Updated testResult for id: $id to "$newResult"');
     }
-
-    testDataList[id].testResult = newResult;
-    log(testDataList[id].testResult);
   }
 
   Future<void> deleteAllTestData() async {

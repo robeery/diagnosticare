@@ -6,6 +6,7 @@ import 'package:diagnosticare/app_theme/app_theme.dart';
 import 'model/test_result_cases.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:diagnosticare/test_data_manager/test_data_manager.dart';
 
 abstract class BaseButton extends StatefulWidget {
   final int testId;
@@ -99,13 +100,22 @@ abstract class BaseButtonState<T extends BaseButton> extends State<T> {
     setState(() {}); // To rebuild the widget with updated data
   }
 
+  var db = TestDataManager();
   @override
   Widget build(BuildContext context) {
     return TextButton.icon(
       style: AppTheme().buttonStyle,
       onPressed: () => onPressedFunction(),
       icon: Icon(
-        getIcon(testData[widget.testId]),
+        // getIcon(testData[widget.testId]),
+        getIcon(
+          EnumToString.fromString(
+                TestResultCases.values,
+                db.testDataList[widget.testId].testResult.split('.').last,
+              ) ??
+              TestResultCases.testNotDone,
+        ),
+
         color: const Color.fromARGB(255, 242, 112, 39),
       ),
       iconAlignment: IconAlignment.end,
