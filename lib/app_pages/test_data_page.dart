@@ -1,4 +1,5 @@
 import 'package:diagnosticare/app_theme/app_theme.dart';
+import 'package:diagnosticare/test_data_manager/test_data_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:diagnosticare/test_buttons/model/test_result_cases.dart';
 
@@ -63,6 +64,7 @@ class TestDataPage extends StatelessWidget {
 class TestDataCard extends StatefulWidget {
   final String title;
   final TestResultCases type;
+
   static final List<String> testNames = [
     'Simple',
     'Accelerometer',
@@ -88,9 +90,11 @@ class _TestDataCardState extends State<TestDataCard> {
   @override
   Widget build(BuildContext context) {
     //the i starts from one because 0 is reserved for "simple button"
+    var db = TestDataManager();
     final filteredTestResults = [
       for (int i = 1; i < testData.length; i++)
-        if (testData[i] == widget.type) TestDataCard.testNames[i],
+        if (db.testDataList[i].testResult == widget.type.toString())
+          TestDataCard.testNames[i],
     ];
 
     switch (widget.type) {
