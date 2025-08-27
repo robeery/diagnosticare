@@ -96,7 +96,11 @@ abstract class BaseButtonState<T extends BaseButton> extends State<T> {
   }
 
   Future<void> _initializeTestData() async {
+    var db = TestDataManager();
+    await db.loadTestDataListFromDB();
+    log(db.testDataList[1].testResult);
     testData = await loadTestData();
+
     setState(() {}); // To rebuild the widget with updated data
   }
 

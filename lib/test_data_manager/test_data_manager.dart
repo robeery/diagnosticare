@@ -44,7 +44,15 @@ class TestDataManager {
   factory TestDataManager() => _instance;
   TestDataManager._internal();
 
-  late List<TestData> testDataList;
+  List<TestData> testDataList = List.filled(
+    10,
+    TestData(
+      id: 0,
+      name: "name_default",
+      testResult: "test_result_default",
+      additionalData: "additional_data_default",
+    ),
+  );
 
   static Database? _database;
 
@@ -77,7 +85,6 @@ class TestDataManager {
   Future<void> initializeWithButtonKeys(
     List<GlobalKey<BaseButtonState>> keys,
   ) async {
-    final db = await database;
     testDataList = List.filled(
       keys.length + 1,
       TestData(
@@ -87,7 +94,7 @@ class TestDataManager {
         additionalData: "additional_data_default",
       ),
     );
-
+    final db = await database;
     // Check if data is already inserted (optional)
     final count = Sqflite.firstIntValue(
       await db.rawQuery('SELECT COUNT(*) FROM TestData'),
@@ -109,6 +116,22 @@ class TestDataManager {
         await insertTestData(testData);
       }
     }
+  }
+
+  Future<void> loadTestDataListFromDB() async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query('TestData');
+
+    testDataList = maps.map((map) => TestData.fromMap(map)).toList();
+    testDataList.insert(
+      0,
+      TestData(
+        id: 0,
+        name: 'Placeholder',
+        testResult: 'D',
+        additionalData: '-',
+      ), // Customize this default as needed
+    );
   }
 
   Future<void> initializeTestDataList(
