@@ -116,6 +116,11 @@ class AccelerometerTestButtonState
               onPressed: () {
                 if (!isTestRunning) {
                   Navigator.pop(context);
+                  var db = TestDataManager();
+                  /*
+                  db.printTestDataList();
+                  db.printAllTestData();
+                  */
                 } else {
                   subscription.cancel();
 

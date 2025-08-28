@@ -32,6 +32,7 @@ abstract class BaseButtonState<T extends BaseButton> extends State<T> {
 
   //param is a possible needed variable for future tests, hence why it is an optional parameter
   runTest({TestResultCases? param});
+
   String getPopUpDescription() {
     return widget.popUpDescription;
   }
@@ -47,37 +48,36 @@ abstract class BaseButtonState<T extends BaseButton> extends State<T> {
   String getImagePath();
 
   Future<void> onPressedFunction() async {
-    bool startTest;
+    bool? startTest;
     startTest = await showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) => StatefulBuilder(
-        builder: (context, setState) => AlertDialog(
-          scrollable: true,
-          title: Text(getPopUpName()),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text(getPopUpDescription()),
-              SizedBox(height: 10),
-              Image.asset(getImagePath(), width: 150, height: 150),
-            ],
-          ),
-          actions: [
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.pop(context, false);
-              },
-            ),
-            TextButton(
-              child: const Text('Start test'),
-              onPressed: () async {
-                Navigator.pop(context, true);
-              },
-            ),
+
+      builder: (context) => AlertDialog(
+        scrollable: true,
+        title: Text(getPopUpName()),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Text(getPopUpDescription()),
+            SizedBox(height: 10),
+            Image.asset(getImagePath(), width: 150, height: 150),
           ],
         ),
+        actions: [
+          TextButton(
+            child: const Text('Cancel'),
+            onPressed: () {
+              Navigator.pop(context, false);
+            },
+          ),
+          TextButton(
+            child: const Text('Start test'),
+            onPressed: () async {
+              Navigator.pop(context, true);
+            },
+          ),
+        ],
       ),
     );
 

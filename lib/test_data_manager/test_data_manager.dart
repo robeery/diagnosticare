@@ -44,15 +44,7 @@ class TestDataManager {
   factory TestDataManager() => _instance;
   TestDataManager._internal();
 
-  List<TestData> testDataList = List.filled(
-    11,
-    TestData(
-      id: 0,
-      name: "name_default",
-      testResult: "test_result_default",
-      additionalData: "additional_data_default",
-    ),
-  );
+  List<TestData> testDataList = [];
 
   static Database? _database;
 
