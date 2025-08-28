@@ -115,10 +115,8 @@ class GyroscopeButtonState extends BaseButtonState<GyroscopeButton> {
             TextButton(
               child: Text(!isTestRunning ? 'Start Test' : 'Fail test'),
               onPressed: () async {
-                //this function needs a lot of optimization and revision, to be done later
-                //one visual bug is the fact that after the press of 'Fail test' the AlertDialog updates the text into 'Start test' again before closing
-                //to be fixed later
-                //maybe add a 500ms delay
+                //this function may need a lot of optimization and revision, to be done later
+
                 if (!isTestRunning) {
                   setState(() {
                     isTestRunning = true;
@@ -130,7 +128,6 @@ class GyroscopeButtonState extends BaseButtonState<GyroscopeButton> {
 
                   if (context.mounted) {
                     Navigator.pop(context);
-                    setState(() {});
 
                     isTestRunning = false;
                   }
@@ -154,101 +151,3 @@ class GyroscopeButtonState extends BaseButtonState<GyroscopeButton> {
     );
   }
 }
-
-//in case of needed
-//old gyroscope logic
-/*
-class GyroscopeButton extends BaseButton {
-  const GyroscopeButton({Key? key, required ValueNotifier<bool> isBusyNotifier})
-    : super(
-        key: key,
-        testId: 2,
-        buttonName: 'Gyroscope',
-        popUpName: 'Gyroscope Test',
-        popUpDescription:
-            'Please twist your wrist in a circular motion with your phone in your hand in order to test the gyroscope.',
-        isBusyNotifier: isBusyNotifier,
-      );
-
-  @override
-  State<GyroscopeButton> createState() => GyroscopeButtonState();
-}
-
-class GyroscopeButtonState extends BaseButtonState<GyroscopeButton> {
-  
-  static Future<TestResultCases> gyroscopeTest() async {
-    bool xPassed = false, yPassed = false, zPassed = false;
-    late StreamSubscription<GyroscopeEvent> subscription;
-    Completer<TestResultCases> completer = Completer<TestResultCases>();
-    var testStartTime = DateTime.now();
-    var timePassed = Duration();
-
-    subscription = gyroscopeEvents.listen(
-      (GyroscopeEvent event) {
-        timePassed = testStartTime.difference(event.timestamp);
-        print(timePassed.inSeconds.abs());
-
-        if (timePassed.inSeconds.abs() > 7) {
-          print("Fail");
-
-          subscription.cancel();
-          completer.complete(TestResultCases.testFailed);
-        }
-
-        if (!xPassed && event.x.abs() >= 1.0) xPassed = true;
-        if (!yPassed && event.y.abs() >= 1.0) yPassed = true;
-        if (!zPassed && event.z.abs() >= 1.0) zPassed = true;
-
-        if (xPassed && yPassed && zPassed) {
-          print("Success");
-
-          subscription.cancel();
-          completer.complete(TestResultCases.testSucceded); // Return testat = 1
-        }
-      },
-      onError: (error) {
-        print("Gyroscope error: $error");
-
-        subscription.cancel();
-        completer.complete(TestResultCases.testFailed);
-      },
-      cancelOnError: true,
-    );
-    return completer.future;
-  }
-
-  @override
-  Future<TestResultCases> runTest({TestResultCases? param}) async {
-    TestResultCases testResult = await gyroscopeTest();
-    print("@runTest -> gyroscope_button $testResult");
-    print("Gyroscope testId -> ${widget.testId}");
-    return testResult;
-  }
-
-  @override
-  void onPressedFunction() async {
-    widget.isBusyNotifier.value = true;
-
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(widget.popUpName),
-        content: Text(widget.popUpDescription),
-        actions: [
-          TextButton(
-            child: const Text('OK'),
-            onPressed: () => Navigator.pop(context),
-          ),
-        ],
-      ),
-    );
-
-    testResult = await runTest(param: testResult);
-    testData[widget.testId] = testResult;
-
-    setState(() {});
-
-    widget.isBusyNotifier.value = false;
-  }
-}
-*/

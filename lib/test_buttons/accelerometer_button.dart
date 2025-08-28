@@ -119,7 +119,6 @@ class AccelerometerTestButtonState
                   }
 
                   if (context.mounted) {
-                    //
                     setState(() {
                       isTestRunning = false;
                     });
@@ -135,11 +134,9 @@ class AccelerometerTestButtonState
             TextButton(
               child: Text(!isTestRunning ? 'Start Test' : 'Fail test'),
               onPressed: () async {
-                //this function needs a lot of optimization and revision, to be done later
-                //one visual bug is the fact that after the press of 'Fail test' the AlertDialog updates the text into 'Start test' again before closing
-                //maybe add an 500ms timer await
+                //this function may need a lot of optimization and revision, to be done later
 
-                if (!isTestRunning) {
+                if (isTestRunning == false) {
                   setState(() {
                     isTestRunning = true;
                   });
@@ -149,12 +146,11 @@ class AccelerometerTestButtonState
 
                   if (context.mounted) {
                     Navigator.pop(context);
-                    setState(() {
-                      isTestRunning = false;
-                    });
+
+                    isTestRunning = false;
                   }
                 } else {
-                  print('Fail button press');
+                  //print('Fail button press');
 
                   subscription.cancel();
 
@@ -164,14 +160,6 @@ class AccelerometerTestButtonState
                   testResult = TestResultCases.testFailed;
 
                   db.updateTestResultById(widget.testId, testResult.toString());
-                  setState(() {});
-                  if (context.mounted) {
-                    setState(() {
-                      isTestRunning = false;
-                    });
-                  }
-                  isTestRunning = false;
-                  setState(() {});
                 }
               },
             ),
