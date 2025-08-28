@@ -22,8 +22,9 @@ class SpeakerTestButton extends BaseButton {
 }
 
 class SpeakerTestButtonState extends BaseButtonState<SpeakerTestButton> {
+  @override
   String getImagePath() {
-    String imagePath = '';
+    String imagePath = ''; //might change to default/stock photo in the future
     switch (widget.buttonName) {
       case 'Speaker':
         imagePath = 'images/speaker_photo.png';
@@ -40,6 +41,7 @@ class SpeakerTestButtonState extends BaseButtonState<SpeakerTestButton> {
     return imagePath;
   }
 
+  @override
   String getPopUpDescription() {
     String popUpDescription = widget.popUpDescription;
 
@@ -66,7 +68,7 @@ class SpeakerTestButtonState extends BaseButtonState<SpeakerTestButton> {
   @override
   runTest({TestResultCases? param}) async {
     if (context.mounted) {
-      print('PUSH');
+      //print('PUSH');
       await Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => StereoTestPage(
@@ -78,48 +80,5 @@ class SpeakerTestButtonState extends BaseButtonState<SpeakerTestButton> {
     }
 
     setState(() {});
-  }
-
-  @override
-  Future<void> onPressedFunction() async {
-    bool startTest;
-    startTest = await showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => StatefulBuilder(
-        builder: (context, setState) => AlertDialog(
-          scrollable: true,
-          title: Text(widget.popUpName),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text(getPopUpDescription()),
-              SizedBox(height: 10),
-              Image.asset(getImagePath(), width: 150, height: 150),
-            ],
-          ),
-          actions: [
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.pop(context, false);
-              },
-            ),
-            TextButton(
-              child: const Text('Start test'),
-              onPressed: () async {
-                // Navigator.pop(context);
-
-                Navigator.pop(context, true);
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-
-    if (startTest == true) {
-      await runTest();
-    }
   }
 }

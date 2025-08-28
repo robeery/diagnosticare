@@ -51,53 +51,16 @@ class CameraTestButtonState extends BaseButtonState<CameraTestButton> {
   }
 
   @override
-  Future<void> onPressedFunction() async {
-    bool startTest;
-    startTest = await showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => StatefulBuilder(
-        builder: (context, setState) => AlertDialog(
-          scrollable: true,
-          title: Text(widget.popUpName),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text(widget.popUpDescription),
-              SizedBox(height: 10),
-              if (widget.testId == 3)
-                Image.asset(
-                  'images/back_camera_image.png',
-                  width: 150,
-                  height: 150,
-                )
-              else if (widget.testId == 4)
-                Image.asset(
-                  'images/front_camera_image.png',
-                  width: 150,
-                  height: 150,
-                ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.pop(context, false);
-              },
-            ),
-            TextButton(
-              child: const Text('Start test'),
-              onPressed: () async {
-                Navigator.pop(context, true);
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-    if (startTest == true) {
-      await runTest();
+  String getImagePath() {
+    //default return value, might change for a stock/error photo
+    String imagePath = 'images/back_camera_image.png';
+    //might change logic for photo selection, hardcoding for ID is not a good idea
+    //to do later
+    if (widget.testId == 3) {
+      imagePath = 'images/back_camera_image.png';
+    } else if (widget.testId == 4) {
+      imagePath = 'images/front_camera_image.png';
     }
+    return imagePath;
   }
 }

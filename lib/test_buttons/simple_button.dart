@@ -30,6 +30,12 @@ class _SimpleTestButtonState extends BaseButtonState<SimpleTestButton> {
   }
 
   @override
+  String getImagePath() {
+    //nothing
+    return '';
+  }
+
+  @override
   Future<void> onPressedFunction() async {
     showDialog(
       context: context,

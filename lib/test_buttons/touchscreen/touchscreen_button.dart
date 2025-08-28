@@ -34,46 +34,7 @@ class TouchScreenTestButtonState
   }
 
   @override
-  Future<void> onPressedFunction() async {
-    bool startTest;
-    startTest = await showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => StatefulBuilder(
-        builder: (context, setState) => AlertDialog(
-          scrollable: true,
-          title: Text(widget.popUpName),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text(widget.popUpDescription),
-              SizedBox(height: 10),
-              Image.asset(
-                'images/touchscreen_image.png',
-                width: 150,
-                height: 150,
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.pop(context, false);
-              },
-            ),
-            TextButton(
-              child: const Text('Start test'),
-              onPressed: () async {
-                Navigator.pop(context, true);
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-    if (startTest == true) {
-      await runTest();
-    }
+  String getImagePath() {
+    return 'images/touchscreen_image.png';
   }
 }

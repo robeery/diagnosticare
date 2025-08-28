@@ -32,7 +32,60 @@ abstract class BaseButtonState<T extends BaseButton> extends State<T> {
 
   //param is a possible needed variable for future tests, hence why it is an optional parameter
   runTest({TestResultCases? param});
-  Future<void> onPressedFunction();
+  String getPopUpDescription() {
+    return widget.popUpDescription;
+  }
+
+  String getTestButtonName() {
+    return widget.buttonName;
+  }
+
+  String getPopUpName() {
+    return widget.popUpName;
+  }
+
+  String getImagePath();
+
+  Future<void> onPressedFunction() async {
+    bool startTest;
+    startTest = await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setState) => AlertDialog(
+          scrollable: true,
+          title: Text(getPopUpName()),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text(getPopUpDescription()),
+              SizedBox(height: 10),
+              Image.asset(getImagePath(), width: 150, height: 150),
+            ],
+          ),
+          actions: [
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.pop(context, false);
+              },
+            ),
+            TextButton(
+              child: const Text('Start test'),
+              onPressed: () async {
+                Navigator.pop(context, true);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+
+    if (startTest == true) {
+      await runTest();
+    }
+  }
+
   //old test data function
   //function that saves tests results
   /*
@@ -133,7 +186,7 @@ abstract class BaseButtonState<T extends BaseButton> extends State<T> {
         color: const Color.fromARGB(255, 242, 112, 39),
       ),
       iconAlignment: IconAlignment.end,
-      label: Text(widget.buttonName),
+      label: Text(getTestButtonName()),
     );
   }
 }

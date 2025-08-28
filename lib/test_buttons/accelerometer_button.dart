@@ -84,6 +84,11 @@ class AccelerometerTestButtonState
   }
 
   @override
+  String getImagePath() {
+    return 'images/accelerometer_photo.png';
+  }
+
+  @override
   Future<void> onPressedFunction() async {
     var db = TestDataManager();
     await showDialog(

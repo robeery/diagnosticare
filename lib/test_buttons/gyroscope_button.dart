@@ -69,6 +69,11 @@ class GyroscopeButtonState extends BaseButtonState<GyroscopeButton> {
   }
 
   @override
+  String getImagePath() {
+    return 'images/gyroscope_photo.png';
+  }
+
+  @override
   Future<void> onPressedFunction() async {
     var db = TestDataManager();
     await showDialog(
