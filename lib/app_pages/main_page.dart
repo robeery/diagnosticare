@@ -32,7 +32,6 @@ class MainPageState extends State<MainPage> {
 
   late final List<Widget> testButtons;
   late final List<GlobalKey<BaseButtonState>> buttonStateKeys;
-  static bool hasFirstReinstancePassed = false;
 
   @override
   void initState() {
@@ -83,13 +82,7 @@ class MainPageState extends State<MainPage> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final manager = TestDataManager();
-      //load TestDataList
-      /*
-      if (hasFirstReinstancePassed == false) {
-        TestDataManager().initializeTestDataList(buttonStateKeys);
-        hasFirstReinstancePassed = true;
-      }
-      */
+
       // Check if DB is empty first
       final data = await manager.getAllTestData();
 

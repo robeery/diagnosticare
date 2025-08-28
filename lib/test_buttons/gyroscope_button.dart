@@ -28,23 +28,9 @@ class GyroscopeButtonState extends BaseButtonState<GyroscopeButton> {
   Future<TestResultCases> gyroscopeTest() async {
     bool xPassed = false, yPassed = false, zPassed = false;
     completer = Completer<TestResultCases>();
-    int numberOfTests = 0;
-    //old gyroscope implementation, time based
-    //var testStartTime = DateTime.now();
-    //var timePassed = Duration();
+
     subscription = gyroscopeEvents.listen(
       (GyroscopeEvent event) {
-        //old gyroscope implementation, time based
-        //timePassed = testStartTime.difference(event.timestamp);
-        //print(timePassed.inSeconds);
-        //if (timePassed.inSeconds.abs() > 7) {
-        //  print("Fail");
-
-        // subscription.cancel();
-        // completer.complete(TestResultCases.testFailed);
-        // }
-        print('Start gyroscope test: $numberOfTests');
-        numberOfTests++;
         if (!xPassed && event.x.abs() >= 1.0) xPassed = true;
         if (!yPassed && event.y.abs() >= 1.0) yPassed = true;
         if (!zPassed && event.z.abs() >= 1.0) zPassed = true;
@@ -54,9 +40,7 @@ class GyroscopeButtonState extends BaseButtonState<GyroscopeButton> {
 
           subscription.cancel();
           if (!completer.isCompleted) {
-            completer.complete(
-              TestResultCases.testSucceded,
-            ); // Return testat = 1
+            completer.complete(TestResultCases.testSucceded);
           }
         }
       },
@@ -119,14 +103,6 @@ class GyroscopeButtonState extends BaseButtonState<GyroscopeButton> {
                   if (!completer.isCompleted) {
                     completer.complete(TestResultCases.testNotDone);
                   }
-                  /*
-                  if (context.mounted) {
-                    //
-                    setState(() {
-                      isTestRunning = false;
-                    });
-                  }
-                  */
 
                   testResult = TestResultCases.testNotDone;
 

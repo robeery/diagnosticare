@@ -24,7 +24,6 @@ class MultiTouchTestButtonState extends BaseButtonState<MultiTouchTestButton> {
   @override
   runTest({TestResultCases? param}) async {
     if (context.mounted) {
-      //print('PUSH');
       await Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => MultiTouchTestScreen(widgetId: widget.testId),
@@ -73,18 +72,6 @@ class MultiTouchTestButtonState extends BaseButtonState<MultiTouchTestButton> {
               child: const Text('Start test'),
               onPressed: () async {
                 Navigator.pop(context, true);
-                //await runTest();
-
-                //Navigator.pop(context);
-
-                //putting a Navigator.pop() after runTest() will cause a blackscreen
-                //the following logs occur only when starting all tests button
-                //manual pressing does not reveal this in the debug log
-                //to be investigated/fixed later
-                //Error running tests: setState() called after dispose(): StartTestButtonsState#f5cd5(lifecycle state: defunct, not mounted)
-                //I/flutter (14444): This error happens if you call setState() on a State object for a widget that no longer appears in the widget tree (e.g., whose parent widget no longer includes the widget in its build). This error can occur when code calls setState() from a timer or an animation callback.
-                //I/flutter (14444): The preferred solution is to cancel the timer or stop listening to the animation in the dispose() callback. Another solution is to check the "mounted" property of this object before calling setState() to ensure the object is still in the tree.
-                //I/flutter (14444): This error might indicate a memory leak if setState() is being called because another object is retaining a reference to this State object after it has been removed from the tree. To avoid memory leaks, consider breaking the reference to this object during dispose().
               },
             ),
           ],

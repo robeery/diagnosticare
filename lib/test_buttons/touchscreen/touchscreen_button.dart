@@ -23,14 +23,13 @@ class TouchScreenTestButtonState
   @override
   runTest({TestResultCases? param}) async {
     if (context.mounted) {
-      print('PUSH');
       await Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => ButtonGridScreen(widgetId: widget.testId),
         ),
       );
     }
-    print('touchscreen test finish');
+
     setState(() {});
   }
 
@@ -66,8 +65,6 @@ class TouchScreenTestButtonState
             TextButton(
               child: const Text('Start test'),
               onPressed: () async {
-                //Navigator.pop(context);
-                //await runTest();
                 Navigator.pop(context, true);
               },
             ),

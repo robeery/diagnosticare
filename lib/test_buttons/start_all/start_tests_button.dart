@@ -33,9 +33,9 @@ class StartTestButtonsState extends State<StartTestButtons> {
       print("widget not mounted runAllTests functions");
       return;
     }
+
     // Get button keys when we actually need them
     final buttonKeys = widget.getButtonKeys?.call();
-    //print("$buttonKeys");
 
     if (buttonKeys == null || buttonKeys.isEmpty) {
       print("No test buttons found");
@@ -49,39 +49,14 @@ class StartTestButtonsState extends State<StartTestButtons> {
     }
 
     print("Starting all tests sequentially...");
-    //BUG1: STEREO SOUND, MULTITOUCH AND TOUCHSCREEN RETURN BUTTONSTATE NULL, INVESTIGATE WHY
-    //BUG2: MAKE ALL FUNCTIONS onPressed() peste tot de tip Future<void> .. await, maybe this will fix the sloppyness
-    //BUG2: that fixed it
-    //BUG1: they return null because the Buttons are generated lazy, FIX1: don't generate them lazy // FIX2: scroll to each one
-    //BUG1: fixed with FIX2
-    //investigate code more
-
-    ///!!!!!!!!!
-    ///I should filter by testData[]
-
-    /*
-    print(
-      'XXXXXXXXX notDoneTestButtons == ${notDoneTestButtons.length} XXXXXXXXX',
-    );
-    */
 
     try {
       // Run each test and wait for it to complete
-      //print(buttonKeys.length);
+
       for (int i = 0; i < buttonKeys.length; i++) {
         if (isRunning == false) return;
         // First, try to scroll to make the button visible
 
-        //if(testData[buttonState!.widget.testId]==TestResultCases.testNotDone)
-        //to add later, maybe filter buttonKeys vector by testResult;
-        //we can't filter by testResult because the testResult field is not properly implemented in BaseButtonClass
-
-        /*
-        if (testData[buttonKeys[i].currentState.widget.testId] !=
-            TestResultCases.testNotDone) {
-          continue;
-        }
-        */
         await _scrollToButton(i); // Scroll to each button before testing
         final buttonState = buttonKeys[i].currentState;
 
@@ -104,7 +79,6 @@ class StartTestButtonsState extends State<StartTestButtons> {
         if (buttonState != null && mounted) {
           print('Starting test ${i + 1}: ${buttonState.widget.buttonName}');
 
-          // Call the button's onPressedFunction to show the dialog
           await buttonState.onPressedFunction();
 
           // Wait for any navigation/dialogs to complete

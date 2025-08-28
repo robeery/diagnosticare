@@ -89,7 +89,6 @@ class CameraTestButtonState extends BaseButtonState<CameraTestButton> {
             TextButton(
               child: const Text('Start test'),
               onPressed: () async {
-                //await runTest();
                 Navigator.pop(context, true);
               },
             ),

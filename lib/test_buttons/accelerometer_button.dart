@@ -32,13 +32,9 @@ class AccelerometerTestButtonState
     completer = Completer<TestResultCases>();
     bool firstAccelerometerIteration = false;
     double x = 0, y = 0, z = 0;
-    //segments of old timebased implementation
 
-    //var testStartTime = DateTime.now();
-    //var timePassed = Duration();
     subscription = accelerometerEvents.listen(
       (AccelerometerEvent event) {
-        //segments of old timebased implementation
         if (firstAccelerometerIteration == false) {
           firstAccelerometerIteration = true;
           x = event.x;
@@ -46,18 +42,7 @@ class AccelerometerTestButtonState
           z = event.z;
           print('first');
         }
-        //timePassed = testStartTime.difference(event.timestamp);
-        //print(timePassed.inSeconds);
-        //if (timePassed.inSeconds.abs() > 7) {
-        //  print("Fail");
 
-        // subscription.cancel();
-        // completer.complete(TestResultCases.testFailed);
-        // }
-        /*
-        print('Start accelerometer test: $numberOfTests');
-        numberOfTests++;
-        */
         print(event);
 
         if (!xPassed && (event.x - x).abs() >= 2.0) xPassed = true;
@@ -69,9 +54,7 @@ class AccelerometerTestButtonState
 
           subscription.cancel();
           if (!completer.isCompleted) {
-            completer.complete(
-              TestResultCases.testSucceded,
-            ); // Return testat = 1
+            completer.complete(TestResultCases.testSucceded);
           }
         }
       },
@@ -95,7 +78,7 @@ class AccelerometerTestButtonState
 
     //print("@runTest -> accelemeter_button $testResult");
     //print("Accelerometru testId -> ${widget.testId}");
-    //print(testData);
+
     setState(() {});
     return testResult;
   }
