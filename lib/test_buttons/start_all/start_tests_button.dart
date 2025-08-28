@@ -141,7 +141,7 @@ class StartTestButtonsState extends State<StartTestButtons> {
       }
     }
   }
-
+  /*
   Future<void> _waitForTestCompletion() async {
     //the program before relied on this function to go through all tests one at a time, now it is not needed
 
@@ -156,6 +156,7 @@ class StartTestButtonsState extends State<StartTestButtons> {
     // Additional small delay to ensure everything is settled
     await Future.delayed(const Duration(milliseconds: 100));
   }
+  */
 
   Future<void> _scrollToButton(int index) async {
     print("_scrollToButton for index $index");

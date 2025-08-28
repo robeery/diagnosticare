@@ -90,7 +90,7 @@ class TestDataManager {
       TestData(
         id: 0,
         name: "name_default",
-        testResult: "test_result_default",
+        testResult: "TestResultCases.testNotDone",
         additionalData: "additional_data_default",
       ),
     );
@@ -107,7 +107,7 @@ class TestDataManager {
       final state = key.currentState;
       if (state != null) {
         final testData = TestData(
-          id: state.widget.testId, // or generate your own ID
+          id: state.widget.testId,
           name: state.widget.buttonName,
           testResult: 'TestResultCases.testNotDone', // Replace as needed
           additionalData: '-',
@@ -132,56 +132,6 @@ class TestDataManager {
         additionalData: '-',
       ), // Customize this default as needed
     );
-  }
-
-  Future<void> initializeTestDataList(
-    List<GlobalKey<BaseButtonState>> keys,
-  ) async {
-    testDataList = List.filled(
-      keys.length + 1,
-      TestData(
-        id: 0,
-        name: "name_default",
-        testResult: "TestResultCases.testNotDone",
-        additionalData: "additional_data_default",
-      ),
-    );
-    final db = await database;
-
-    // Check if the table is empty
-    final count = Sqflite.firstIntValue(
-      await db.rawQuery('SELECT COUNT(*) FROM TestData'),
-    );
-
-    if (count == null || count == 0) {
-      // If empty, initialize with default values
-      testDataList = List.filled(
-        keys.length + 1,
-        TestData(
-          id: 0,
-          name: "name_default",
-          testResult: "TestResultCases.testNotDone",
-          additionalData: "additional_data_default",
-        ),
-      );
-      print("⚠️ DB is empty. testDataList filled with default entries.");
-      return;
-    }
-
-    // Otherwise, load data from DB
-    final List<Map<String, dynamic>> maps = await db.query('TestData');
-
-    testDataList = maps.map((map) => TestData.fromMap(map)).toList();
-    testDataList.insert(
-      0,
-      TestData(
-        id: 0,
-        name: 'Placeholder',
-        testResult: 'D',
-        additionalData: '-',
-      ), // Customize this default as needed
-    );
-    print('✅ testDataList initialized with ${testDataList.length} entries.');
   }
 
   void printTestDataList() {
