@@ -1,13 +1,10 @@
 import 'package:diagnosticare/app_theme/app_theme.dart';
 import 'package:diagnosticare/test_buttons/model/test_result_cases.dart';
 import 'package:diagnosticare/test_data_manager/test_data_manager.dart';
-import 'package:enum_to_string/enum_to_string.dart';
 
 import 'package:flutter/material.dart';
 
 import 'dart:async';
-
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ButtonGridScreen extends StatefulWidget {
   final int widgetId;
@@ -103,20 +100,16 @@ class _ButtonGridScreenState extends State<ButtonGridScreen> {
   void _exitScreen({bool fromTimeout = false}) {
     if (mounted) {
       inactivityTimer?.cancel();
-
+      var testResult;
       if (fromTimeout) {
-        testData[widget.widgetId] = TestResultCases.testFailed;
+        testResult = TestResultCases.testFailed;
         print("Touchscreen Test failed");
       } else {
-        testData[widget.widgetId] = TestResultCases.testSucceded;
+        testResult = TestResultCases.testSucceded;
         print("Touchscreen Test succeded");
       }
-      saveTestData(testData);
 
-      db.updateTestResultById(
-        widget.widgetId,
-        testData[widget.widgetId].toString(),
-      );
+      db.updateTestResultById(widget.widgetId, testResult.toString());
 
       Navigator.pop(context);
     }
@@ -126,17 +119,6 @@ class _ButtonGridScreenState extends State<ButtonGridScreen> {
   void dispose() {
     inactivityTimer?.cancel();
     super.dispose();
-  }
-
-  Future<void> saveTestData(List<TestResultCases> testData) async {
-    final prefs = await SharedPreferences.getInstance();
-
-    // Convert each enum to string using Enum_to_string plugin
-    List<String> stringList = testData
-        .map((e) => EnumToString.convertToString(e))
-        .toList();
-
-    await prefs.setStringList('testData', stringList);
   }
 
   @override

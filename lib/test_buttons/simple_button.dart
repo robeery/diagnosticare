@@ -1,3 +1,4 @@
+import 'package:diagnosticare/test_data_manager/test_data_manager.dart';
 import 'package:flutter/material.dart';
 import 'base_button.dart';
 import 'model/test_result_cases.dart';
@@ -24,7 +25,7 @@ class _SimpleTestButtonState extends BaseButtonState<SimpleTestButton> {
         : TestResultCases.testNotDone;
     print(testResult);
     print("SimpleButton testId -> ${widget.testId}");
-    print(testData.length);
+
     return testResult;
   }
 
@@ -44,11 +45,9 @@ class _SimpleTestButtonState extends BaseButtonState<SimpleTestButton> {
         ],
       ),
     );
+    var db = TestDataManager();
 
-    testResult = await runTest(param: testResult);
-    testData[widget.testId] = testResult;
-
-    saveTestData(testData);
+    db.updateTestResultById(widget.testId, testResult.toString());
 
     setState(() {});
   }

@@ -142,13 +142,10 @@ class AccelerometerTestButtonState
                     });
                   }
 
-                  testData[widget.testId] = TestResultCases.testNotDone;
-                  saveTestData(testData);
+                  testResult = TestResultCases.testNotDone;
 
-                  db.updateTestResultById(
-                    widget.testId,
-                    testData[widget.testId].toString(),
-                  );
+                  db.updateTestResultById(widget.testId, testResult.toString());
+                  setState(() {});
                 }
               },
             ),
@@ -165,13 +162,7 @@ class AccelerometerTestButtonState
                   });
 
                   testResult = await runTest(param: testResult);
-                  testData[widget.testId] = testResult;
-                  await saveTestData(testData);
-
-                  db.updateTestResultById(
-                    widget.testId,
-                    testData[widget.testId].toString(),
-                  );
+                  db.updateTestResultById(widget.testId, testResult.toString());
 
                   if (context.mounted) {
                     Navigator.pop(context);
@@ -187,20 +178,17 @@ class AccelerometerTestButtonState
                   if (!completer.isCompleted) {
                     completer.complete(TestResultCases.testFailed);
                   }
-                  testData[widget.testId] = TestResultCases.testFailed;
-                  await saveTestData(testData);
+                  testResult = TestResultCases.testFailed;
 
-                  db.updateTestResultById(
-                    widget.testId,
-                    testData[widget.testId].toString(),
-                  );
-
+                  db.updateTestResultById(widget.testId, testResult.toString());
+                  setState(() {});
                   if (context.mounted) {
                     setState(() {
                       isTestRunning = false;
                     });
                   }
                   isTestRunning = false;
+                  setState(() {});
                 }
               },
             ),

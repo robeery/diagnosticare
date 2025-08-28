@@ -1,9 +1,6 @@
 import 'package:diagnosticare/app_theme/app_theme.dart';
-import 'package:diagnosticare/test_buttons/model/test_result_cases.dart';
 import 'package:diagnosticare/test_data_manager/test_data_manager.dart';
-import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ResetTestDataButton extends StatelessWidget {
   static String popUpName = "Reset all test data";
@@ -16,26 +13,10 @@ class ResetTestDataButton extends StatelessWidget {
   }
 
   void resetData() async {
-    for (int i = 0; i < testData.length; i++) {
-      testData[i] = TestResultCases.testNotDone;
-    }
     var db = TestDataManager();
     await db.deleteAllTestData();
 
-    await saveTestData(testData);
-
     callback.call();
-  }
-
-  Future<void> saveTestData(List<TestResultCases> testData) async {
-    final prefs = await SharedPreferences.getInstance();
-
-    // Convert each enum to string using Enum_to_string plugin
-    List<String> stringList = testData
-        .map((e) => EnumToString.convertToString(e))
-        .toList();
-
-    await prefs.setStringList('testData', stringList);
   }
 
   void onPressedFunctionReset(BuildContext context) {

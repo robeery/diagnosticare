@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:diagnosticare/test_buttons/model/test_result_cases.dart';
 import 'package:diagnosticare/test_buttons/multitouch/multitouch_test.dart';
 import 'package:diagnosticare/test_data_manager/test_data_manager.dart';

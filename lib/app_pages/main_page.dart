@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:diagnosticare/test_buttons/base_button.dart';
 import 'package:diagnosticare/test_buttons/gyroscope_button.dart';
 import 'package:diagnosticare/test_buttons/multitouch/multitouch_button.dart';
@@ -8,7 +6,6 @@ import 'package:diagnosticare/test_buttons/touchscreen/touchscreen_button.dart';
 import 'package:diagnosticare/test_data_manager/test_data_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:diagnosticare/test_buttons/accelerometer_button.dart';
-//import 'package:diagnosticare/test_buttons/simple_button.dart';
 import 'package:diagnosticare/app_theme/app_theme.dart';
 import 'package:diagnosticare/test_buttons/camera/camera_button.dart';
 

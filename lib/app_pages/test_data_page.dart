@@ -82,7 +82,7 @@ class _TestDataCardState extends State<TestDataCard> {
     ];
 
     final filteredTestResults = [
-      for (int i = 0; i < db.testDataList.length; i++)
+      for (int i = 1; i < db.testDataList.length; i++)
         if (db.testDataList[i].testResult == widget.type.toString())
           testNames[i],
     ];

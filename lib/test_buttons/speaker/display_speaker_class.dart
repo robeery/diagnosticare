@@ -1,11 +1,9 @@
 import 'package:diagnosticare/app_theme/app_theme.dart';
 import 'package:diagnosticare/test_buttons/model/test_result_cases.dart';
 import 'package:diagnosticare/test_data_manager/test_data_manager.dart';
-import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_audio_output/flutter_audio_output.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class StereoTestPage extends StatefulWidget {
   final int widgetId;
@@ -67,14 +65,6 @@ class StereoTestPageState extends State<StereoTestPage> {
   void dispose() {
     player.dispose();
     super.dispose();
-  }
-
-  Future<void> saveTestData(List<TestResultCases> testData) async {
-    final prefs = await SharedPreferences.getInstance();
-    List<String> stringList = testData
-        .map((e) => EnumToString.convertToString(e))
-        .toList();
-    await prefs.setStringList('testData', stringList);
   }
 
   var db = TestDataManager();
@@ -211,12 +201,11 @@ class StereoTestPageState extends State<StereoTestPage> {
               TextButton.icon(
                 onPressed: isPressedButton1 && isPressedButton2
                     ? () {
-                        testData[widget.widgetId] = TestResultCases.testFailed;
-                        saveTestData(testData);
+                        var testResult = TestResultCases.testFailed;
 
                         db.updateTestResultById(
                           widget.widgetId,
-                          testData[widget.widgetId].toString(),
+                          testResult.toString(),
                         );
                         player.stop();
                         Navigator.pop(context);
@@ -231,12 +220,11 @@ class StereoTestPageState extends State<StereoTestPage> {
               TextButton.icon(
                 onPressed: isPressedButton1 && isPressedButton2
                     ? () {
-                        testData[widget.widgetId] =
-                            TestResultCases.testSucceded;
-                        saveTestData(testData);
+                        var testResult = TestResultCases.testSucceded;
+
                         db.updateTestResultById(
                           widget.widgetId,
-                          testData[widget.widgetId].toString(),
+                          testResult.toString(),
                         );
                         player.stop();
                         Navigator.pop(context);

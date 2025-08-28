@@ -1,10 +1,8 @@
-import 'dart:async';
 import 'dart:io';
 import 'package:diagnosticare/app_theme/app_theme.dart';
 import 'package:diagnosticare/test_buttons/model/test_result_cases.dart';
-import 'package:enum_to_string/enum_to_string.dart';
+
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:diagnosticare/test_data_manager/test_data_manager.dart';
 
 // A widget that displays the picture taken by the user.
@@ -17,18 +15,6 @@ class DisplayPictureScreen extends StatelessWidget {
     required this.imagePath,
     required this.widgetId,
   });
-
-  // Function that saves test results
-  Future<void> saveTestData(List<TestResultCases> testData) async {
-    final prefs = await SharedPreferences.getInstance();
-
-    // Convert each enum to string using Enum_to_string plugin
-    List<String> stringList = testData
-        .map((e) => EnumToString.convertToString(e))
-        .toList();
-
-    await prefs.setStringList('testData', stringList);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,13 +45,9 @@ class DisplayPictureScreen extends StatelessWidget {
                 TextButton.icon(
                   onPressed: () {
                     // Save 'test failed' result and go back
-                    testData[widgetId] = TestResultCases.testFailed;
-                    saveTestData(testData);
+                    var testResult = TestResultCases.testFailed;
                     var db = TestDataManager();
-                    db.updateTestResultById(
-                      widgetId,
-                      testData[widgetId].toString(),
-                    );
+                    db.updateTestResultById(widgetId, testResult.toString());
                     Navigator.pop(context); // Close DisplayPictureScreen
                     Navigator.pop(context); // Close TakePictureScreen
                   },
@@ -78,13 +60,9 @@ class DisplayPictureScreen extends StatelessWidget {
                 TextButton.icon(
                   onPressed: () {
                     // Save 'test succeeded' result and go back
-                    testData[widgetId] = TestResultCases.testSucceded;
-                    saveTestData(testData);
+                    var testResult = TestResultCases.testSucceded;
                     var db = TestDataManager();
-                    db.updateTestResultById(
-                      widgetId,
-                      testData[widgetId].toString(),
-                    );
+                    db.updateTestResultById(widgetId, testResult.toString());
                     Navigator.pop(context); // Close DisplayPictureScreen
                     Navigator.pop(context); // Close TakePictureScreen
                   },

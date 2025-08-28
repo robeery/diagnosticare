@@ -2,9 +2,7 @@ import 'dart:async';
 import 'package:diagnosticare/app_theme/app_theme.dart';
 import 'package:diagnosticare/test_buttons/model/test_result_cases.dart';
 import 'package:diagnosticare/test_data_manager/test_data_manager.dart';
-import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class MultiTouchTestScreen extends StatefulWidget {
   final int widgetId;
@@ -37,17 +35,6 @@ class _MultiTouchTestScreenState extends State<MultiTouchTestScreen> {
   void dispose() {
     _inactivityTimer?.cancel();
     super.dispose();
-  }
-
-  Future<void> saveTestData(List<TestResultCases> testData) async {
-    final prefs = await SharedPreferences.getInstance();
-
-    // Convert each enum to string using Enum_to_string plugin
-    List<String> stringList = testData
-        .map((e) => EnumToString.convertToString(e))
-        .toList();
-
-    await prefs.setStringList('testData', stringList);
   }
 
   void _startInactivityTimer() {
@@ -133,18 +120,16 @@ class _MultiTouchTestScreenState extends State<MultiTouchTestScreen> {
   }
 
   void _exitScreen({required bool success}) {
+    var testResult;
     if (!mounted) return;
     if (success) {
-      testData[widget.widgetId] = TestResultCases.testSucceded;
+      testResult = TestResultCases.testSucceded;
     } else {
-      testData[widget.widgetId] = TestResultCases.testFailed;
+      testResult = TestResultCases.testFailed;
     }
-    saveTestData(testData);
+
     var db = TestDataManager();
-    db.updateTestResultById(
-      widget.widgetId,
-      testData[widget.widgetId].toString(),
-    );
+    db.updateTestResultById(widget.widgetId, testResult.toString());
     _inactivityTimer?.cancel();
 
     if (Navigator.of(context).canPop()) {

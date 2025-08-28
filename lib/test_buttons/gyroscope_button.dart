@@ -128,12 +128,9 @@ class GyroscopeButtonState extends BaseButtonState<GyroscopeButton> {
                   }
                   */
 
-                  testData[widget.testId] = TestResultCases.testNotDone;
-                  saveTestData(testData);
-                  db.updateTestResultById(
-                    widget.testId,
-                    testData[widget.testId].toString(),
-                  );
+                  testResult = TestResultCases.testNotDone;
+
+                  db.updateTestResultById(widget.testId, testResult.toString());
 
                   isTestRunning = false;
                 }
@@ -152,12 +149,8 @@ class GyroscopeButtonState extends BaseButtonState<GyroscopeButton> {
                   });
 
                   testResult = await runTest(param: testResult);
-                  testData[widget.testId] = testResult;
-                  await saveTestData(testData);
-                  db.updateTestResultById(
-                    widget.testId,
-                    testData[widget.testId].toString(),
-                  );
+
+                  db.updateTestResultById(widget.testId, testResult.toString());
 
                   if (context.mounted) {
                     Navigator.pop(context);
@@ -173,12 +166,9 @@ class GyroscopeButtonState extends BaseButtonState<GyroscopeButton> {
                   if (!completer.isCompleted) {
                     completer.complete(TestResultCases.testFailed);
                   }
-                  testData[widget.testId] = TestResultCases.testFailed;
-                  await saveTestData(testData);
-                  db.updateTestResultById(
-                    widget.testId,
-                    testData[widget.testId].toString(),
-                  );
+                  testResult = TestResultCases.testFailed;
+
+                  db.updateTestResultById(widget.testId, testResult.toString());
                 }
               },
             ),

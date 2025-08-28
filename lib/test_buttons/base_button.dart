@@ -1,12 +1,8 @@
-import 'dart:developer';
-
 import 'package:diagnosticare/test_data_manager/test_data_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:diagnosticare/app_theme/app_theme.dart';
 import 'model/test_result_cases.dart';
 import 'package:enum_to_string/enum_to_string.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:diagnosticare/test_data_manager/test_data_manager.dart';
 
 abstract class BaseButton extends StatefulWidget {
   final int testId;
@@ -37,8 +33,9 @@ abstract class BaseButtonState<T extends BaseButton> extends State<T> {
   //param is a possible needed variable for future tests, hence why it is an optional parameter
   runTest({TestResultCases? param});
   Future<void> onPressedFunction();
-
+  //old test data function
   //function that saves tests results
+  /*
   Future<void> saveTestData(List<TestResultCases> testData) async {
     final prefs = await SharedPreferences.getInstance();
 
@@ -49,8 +46,10 @@ abstract class BaseButtonState<T extends BaseButton> extends State<T> {
 
     await prefs.setStringList('testData', stringList);
   }
-
+  */
+  //old test data function
   //function that loads test results
+  /*
   Future<List<TestResultCases>> loadTestData() async {
     final prefs = await SharedPreferences.getInstance();
     final stringList = prefs.getStringList('testData');
@@ -71,7 +70,7 @@ abstract class BaseButtonState<T extends BaseButton> extends State<T> {
 
     //return List.filled(10, TestResultCases.testNotDone);
   }
-
+  */
   @override
   void initState() {
     super.initState();
@@ -99,7 +98,6 @@ abstract class BaseButtonState<T extends BaseButton> extends State<T> {
     var db = TestDataManager();
     await db.loadTestDataListFromDB();
     // log(db.testDataList[1].testResult);
-    testData = await loadTestData();
 
     setState(() {}); // To rebuild the widget with updated data
   }
@@ -112,6 +110,7 @@ abstract class BaseButtonState<T extends BaseButton> extends State<T> {
       onPressed: () => onPressedFunction(),
       icon: Icon(
         // getIcon(testData[widget.testId]),
+
         /*
         getIcon(
           EnumToString.fromString(
@@ -121,6 +120,7 @@ abstract class BaseButtonState<T extends BaseButton> extends State<T> {
               TestResultCases.testNotDone,
         ),
         */
+        //this makes sure getIcon gets loaded no matter what
         getIcon(
           (widget.testId >= 0 && widget.testId < db.testDataList.length)
               ? EnumToString.fromString(
