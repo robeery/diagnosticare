@@ -89,6 +89,8 @@ class MainPageState extends State<MainPage> {
       final data = await manager.getAllTestData();
 
       if (data.isEmpty) {
+        //in desiredTestButtonData we filter what data we need from button keys
+        //first we initialize it with something
         List<TestData> desiredTestButtonsData = List.filled(
           buttonStateKeys.length + 1,
           TestData(
@@ -99,12 +101,11 @@ class MainPageState extends State<MainPage> {
           ),
         );
         int i = 1;
-        //log('BEFORE FOR');
+        //then we extract desired data
         for (var key in buttonStateKeys) {
           final state = key.currentState;
-          //log('IN FOR');
+
           if (state != null) {
-            //log('STATE!=NULL');
             final testData = TestData(
               id: state.widget.testId,
               name: state.widget.buttonName,
@@ -113,9 +114,10 @@ class MainPageState extends State<MainPage> {
             );
 
             desiredTestButtonsData[i++] = testData;
-            log(desiredTestButtonsData[i - 1].name);
+            //log(desiredTestButtonsData[i - 1].name);
           }
         }
+        //then we send them to initialize and populate db and centralized list
         await manager.initializeAndPopulateDBandTestDataList(
           desiredTestButtonsData,
         );
