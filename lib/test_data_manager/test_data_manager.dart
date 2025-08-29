@@ -74,18 +74,10 @@ class TestDataManager {
     );
   }
 
-  Future<void> initializeWithButtonKeys(
-    List<GlobalKey<BaseButtonState>> keys,
+  Future<void> initializeAndPopulateDBandTestDataList(
+    List<TestData> desiredTestButtonsData,
   ) async {
-    testDataList = List.filled(
-      keys.length + 1,
-      TestData(
-        id: 0,
-        name: "name_default",
-        testResult: "TestResultCases.testNotDone",
-        additionalData: "additional_data_default",
-      ),
-    );
+    testDataList = desiredTestButtonsData;
     final db = await database;
     // Check if data is already inserted (optional)
     final count = Sqflite.firstIntValue(
@@ -93,20 +85,10 @@ class TestDataManager {
     );
     if (count != null && count > 0) return;
 
-    int i = 1;
     // Populate the table
-    for (var key in keys) {
-      final state = key.currentState;
-      if (state != null) {
-        final testData = TestData(
-          id: state.widget.testId,
-          name: state.widget.buttonName,
-          testResult: 'TestResultCases.testNotDone', // Replace as needed
-          additionalData: '-',
-        );
-        testDataList[i++] = testData;
-        await insertTestData(testData);
-      }
+    for (int i = 1; i < desiredTestButtonsData.length; i++) {
+      log(desiredTestButtonsData[i].name);
+      await insertTestData(desiredTestButtonsData[i]);
     }
   }
 

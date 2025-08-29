@@ -1,7 +1,5 @@
 import 'package:diagnosticare/test_buttons/abstract/automatic_test_button.dart';
 
-import 'package:diagnosticare/test_data_manager/test_data_manager.dart';
-
 import 'abstract/base_button.dart';
 import 'package:flutter/material.dart';
 import 'package:sensors_plus/sensors_plus.dart';

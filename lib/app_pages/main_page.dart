@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:diagnosticare/test_buttons/abstract/base_button.dart';
 import 'package:diagnosticare/test_buttons/gyroscope_button.dart';
 import 'package:diagnosticare/test_buttons/multitouch/multitouch_button.dart';
@@ -87,7 +89,36 @@ class MainPageState extends State<MainPage> {
       final data = await manager.getAllTestData();
 
       if (data.isEmpty) {
-        await manager.initializeWithButtonKeys(buttonStateKeys);
+        List<TestData> desiredTestButtonsData = List.filled(
+          buttonStateKeys.length + 1,
+          TestData(
+            id: 0,
+            name: "name_default",
+            testResult: "TestResultCases.testNotDone",
+            additionalData: "additional_data_default",
+          ),
+        );
+        int i = 1;
+        //log('BEFORE FOR');
+        for (var key in buttonStateKeys) {
+          final state = key.currentState;
+          //log('IN FOR');
+          if (state != null) {
+            //log('STATE!=NULL');
+            final testData = TestData(
+              id: state.widget.testId,
+              name: state.widget.buttonName,
+              testResult: 'TestResultCases.testNotDone', // Replace as needed
+              additionalData: '-',
+            );
+
+            desiredTestButtonsData[i++] = testData;
+            log(desiredTestButtonsData[i - 1].name);
+          }
+        }
+        await manager.initializeAndPopulateDBandTestDataList(
+          desiredTestButtonsData,
+        );
 
         // Optional: fetch and print data again for testing
         final newData = await manager.getAllTestData();
