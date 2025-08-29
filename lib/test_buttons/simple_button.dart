@@ -1,6 +1,6 @@
 import 'package:diagnosticare/test_data_manager/test_data_manager.dart';
 import 'package:flutter/material.dart';
-import 'base_button.dart';
+import 'abstract/base_button.dart';
 import 'model/test_result_cases.dart';
 
 class SimpleTestButton extends BaseButton {

@@ -1,9 +1,10 @@
+import 'package:diagnosticare/test_buttons/abstract/manual_test_button.dart';
 import 'package:diagnosticare/test_buttons/model/test_result_cases.dart';
 import 'package:diagnosticare/test_buttons/multitouch/multitouch_test.dart';
 import 'package:diagnosticare/test_data_manager/test_data_manager.dart';
 
 import 'package:flutter/material.dart';
-import '../base_button.dart';
+import '../abstract/base_button.dart';
 
 class MultiTouchTestButton extends BaseButton {
   const MultiTouchTestButton({Key? key})
@@ -20,7 +21,8 @@ class MultiTouchTestButton extends BaseButton {
   State<MultiTouchTestButton> createState() => MultiTouchTestButtonState();
 }
 
-class MultiTouchTestButtonState extends BaseButtonState<MultiTouchTestButton> {
+class MultiTouchTestButtonState
+    extends ManualTestButtonState<MultiTouchTestButton> {
   @override
   runTest({TestResultCases? param}) async {
     if (context.mounted) {

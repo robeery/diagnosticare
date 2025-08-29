@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:diagnosticare/test_buttons/base_button.dart';
+import 'package:diagnosticare/test_buttons/abstract/base_button.dart';
 
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';

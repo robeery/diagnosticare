@@ -1,11 +1,12 @@
 // A screen that allows users to take a picture using a given camera.
 
+import 'package:diagnosticare/test_buttons/abstract/manual_test_button.dart';
 import 'package:diagnosticare/test_buttons/model/test_result_cases.dart';
 
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 
-import '../base_button.dart';
+import '../abstract/base_button.dart';
 import 'take_picture_class.dart';
 
 class CameraTestButton extends BaseButton {
@@ -29,7 +30,7 @@ class CameraTestButton extends BaseButton {
   State<CameraTestButton> createState() => CameraTestButtonState();
 }
 
-class CameraTestButtonState extends BaseButtonState<CameraTestButton> {
+class CameraTestButtonState extends ManualTestButtonState<CameraTestButton> {
   @override
   runTest({TestResultCases? param}) async {
     WidgetsFlutterBinding.ensureInitialized();

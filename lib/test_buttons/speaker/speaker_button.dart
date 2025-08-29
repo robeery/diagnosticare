@@ -1,7 +1,8 @@
+import 'package:diagnosticare/test_buttons/abstract/manual_test_button.dart';
 import 'package:diagnosticare/test_buttons/model/test_result_cases.dart';
 import 'package:diagnosticare/test_buttons/speaker/display_speaker_class.dart';
 import 'package:flutter/material.dart';
-import '../base_button.dart';
+import '../abstract/base_button.dart';
 
 class SpeakerTestButton extends BaseButton {
   const SpeakerTestButton({
@@ -21,7 +22,7 @@ class SpeakerTestButton extends BaseButton {
   State<SpeakerTestButton> createState() => SpeakerTestButtonState();
 }
 
-class SpeakerTestButtonState extends BaseButtonState<SpeakerTestButton> {
+class SpeakerTestButtonState extends ManualTestButtonState<SpeakerTestButton> {
   @override
   String getImagePath() {
     String imagePath = ''; //might change to default/stock photo in the future

@@ -1,6 +1,7 @@
+import 'package:diagnosticare/test_buttons/abstract/automatic_test_button.dart';
 import 'package:diagnosticare/test_data_manager/test_data_manager.dart';
 
-import 'base_button.dart';
+import 'abstract/base_button.dart';
 import 'package:flutter/material.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 import 'dart:async';
@@ -23,10 +24,10 @@ class AccelerometerTestButton extends BaseButton {
 }
 
 class AccelerometerTestButtonState
-    extends BaseButtonState<AccelerometerTestButton> {
+    extends AutomaticTestButtonState<AccelerometerTestButton> {
   late StreamSubscription<AccelerometerEvent> subscription;
   late Completer<TestResultCases> completer = Completer<TestResultCases>();
-  bool isTestRunning = false;
+
   Future<TestResultCases> accelerometerTest() async {
     bool xPassed = false, yPassed = false, zPassed = false;
     completer = Completer<TestResultCases>();
@@ -89,93 +90,62 @@ class AccelerometerTestButtonState
   }
 
   @override
-  Future<void> onPressedFunction() async {
-    var db = TestDataManager();
-    await showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => StatefulBuilder(
-        builder: (context, setState) => AlertDialog(
-          scrollable: true,
-          title: Text(widget.popUpName),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text(widget.popUpDescription),
-              SizedBox(height: 10),
-              Image.asset(
-                'images/accelerometer_photo.png',
-                width: 150,
-                height: 150,
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                if (!isTestRunning) {
-                  Navigator.pop(context);
-                  var db = TestDataManager();
-                  /*
+  Future<void> onPressedStartTest(StateSetter dialogSetState) async {
+    //this function may need a lot of optimization and revision, to be done later
+
+    if (super.isTestRunning == false) {
+      dialogSetState(() {
+        super.isTestRunning = true;
+      });
+
+      testResult = await runTest(param: testResult);
+      db.updateTestResultById(widget.testId, testResult.toString());
+
+      if (context.mounted) {
+        Navigator.pop(context);
+
+        super.isTestRunning = false;
+      }
+    } else {
+      //print('Fail button press');
+
+      subscription.cancel();
+
+      if (!completer.isCompleted) {
+        completer.complete(TestResultCases.testFailed);
+      }
+      testResult = TestResultCases.testFailed;
+
+      db.updateTestResultById(widget.testId, testResult.toString());
+    }
+  }
+
+  @override
+  Future<void> onPressedCancel() async {
+    if (!super.isTestRunning) {
+      Navigator.pop(context);
+      var db = TestDataManager();
+      /*
                   db.printTestDataList();
                   db.printAllTestData();
                   */
-                } else {
-                  subscription.cancel();
+    } else {
+      subscription.cancel();
 
-                  if (!completer.isCompleted) {
-                    completer.complete(TestResultCases.testNotDone);
-                  }
+      if (!completer.isCompleted) {
+        completer.complete(TestResultCases.testNotDone);
+      }
 
-                  if (context.mounted) {
-                    setState(() {
-                      isTestRunning = false;
-                    });
-                  }
+      if (context.mounted) {
+        setState(() {
+          super.isTestRunning = false;
+        });
+      }
 
-                  testResult = TestResultCases.testNotDone;
+      testResult = TestResultCases.testNotDone;
 
-                  db.updateTestResultById(widget.testId, testResult.toString());
-                  setState(() {});
-                }
-              },
-            ),
-            TextButton(
-              child: Text(!isTestRunning ? 'Start Test' : 'Fail test'),
-              onPressed: () async {
-                //this function may need a lot of optimization and revision, to be done later
-
-                if (isTestRunning == false) {
-                  setState(() {
-                    isTestRunning = true;
-                  });
-
-                  testResult = await runTest(param: testResult);
-                  db.updateTestResultById(widget.testId, testResult.toString());
-
-                  if (context.mounted) {
-                    Navigator.pop(context);
-
-                    isTestRunning = false;
-                  }
-                } else {
-                  //print('Fail button press');
-
-                  subscription.cancel();
-
-                  if (!completer.isCompleted) {
-                    completer.complete(TestResultCases.testFailed);
-                  }
-                  testResult = TestResultCases.testFailed;
-
-                  db.updateTestResultById(widget.testId, testResult.toString());
-                }
-              },
-            ),
-          ],
-        ),
-      ),
-    );
+      db.updateTestResultById(widget.testId, testResult.toString());
+      setState(() {});
+    }
   }
 }
