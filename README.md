@@ -55,7 +55,7 @@ Each test features intuitive step-by-step instructions, real-time visual feedbac
 </br>
 
 <p align="center">
-    <a href="https://github.com/robeery/diagnosticare/blob/test-buttons-abstract-refactor/assets/readme/diagnostics_diagram.png" target="_blank">
+    <a href="https://raw.githubusercontent.com/robeery/diagnosticare/refs/heads/test-buttons-abstract-refactor/assets/readme/diagnostics_diagram.png" target="_blank">
     <img src="assets/readme/diagnostics_diagram.png" width="100%">
     </a>
 </p>
