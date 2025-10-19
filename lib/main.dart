@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: AppTheme.lightTheme,
-      home: const MyHomePage(title: 'Certus Mobile Diagnosis Tool'),
+      home: const MyHomePage(title: 'Veritas Mobile Diagnostics'),
     );
   }
 }
@@ -62,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Widget page;
     switch (selectedIndex) {
       case 0:
-        page = MainPage(key: mainPageKey, title: 'Certus');
+        page = MainPage(key: mainPageKey, title: 'Veritas');
 
       case 1:
         page = TestDataPage();
